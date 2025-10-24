@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class AnalyticsPage extends StatefulWidget {
   const AnalyticsPage({super.key});
@@ -9,6 +12,8 @@ class AnalyticsPage extends StatefulWidget {
 
 class _AnalyticsPageState extends State<AnalyticsPage> {
   int? selectedDayIndex; // 選択された日のインデックス
+  DateTimeRange? selectedDateRange; // カレンダーで選択された期間
+  final DateFormat dateFormat = DateFormat('yyyy年MM月dd日');
 
   // 日ごとのダミーデータ（実際はFirestoreから取得）
   final Map<int, List<Map<String, dynamic>>> dailyData = {
@@ -49,6 +54,28 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
     ],
   };
 
+  // カレンダーで期間選択したときのダミーデータ
+  final List<Map<String, dynamic>> customRangeData = [
+    {'floor': '7F', 'count': 15, 'time': '10h 00m'},
+    {'floor': '5F', 'count': 12, 'time': '8h 00m'},
+    {'floor': '3F', 'count': 10, 'time': '6h 40m'},
+    {'floor': '2F', 'count': 8, 'time': '5h 20m'},
+  ];
+
+  Future<void> _pickDateRange(BuildContext context) async {
+    final result = await showDialog<DateTimeRange>(
+      context: context,
+      builder: (context) => const CustomDateRangePicker(),
+    );
+
+    if (result != null) {
+      setState(() {
+        selectedDateRange = result;
+        selectedDayIndex = null; // バーグラフの選択をクリア
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final startDate = DateTime.now().subtract(const Duration(days: 6));
@@ -80,19 +107,33 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
     ];
 
     // 表示するランキングデータを選択
-    final displayRanking = selectedDayIndex != null
+    final displayRanking = selectedDateRange != null
+        ? customRangeData
+        : (selectedDayIndex != null
         ? dailyData[selectedDayIndex]!
-        : allPeriodRanking;
+        : allPeriodRanking);
+
+    // ランキングタイトルの表示テキスト
+    String getRankingTitle() {
+      if (selectedDateRange != null) {
+        return '${dateFormat.format(selectedDateRange!.start)} 〜 ${dateFormat.format(selectedDateRange!.end)} のランキング';
+      } else if (selectedDayIndex != null) {
+        return '${days[selectedDayIndex!]} のランキング';
+      } else {
+        return 'ランキング（全期間）';
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('データ集計'),
         actions: [
-          if (selectedDayIndex != null)
+          if (selectedDayIndex != null || selectedDateRange != null)
             TextButton(
               onPressed: () {
                 setState(() {
                   selectedDayIndex = null;
+                  selectedDateRange = null;
                 });
               },
               child: const Text('全期間に戻る', style: TextStyle(color: Colors.red)),
@@ -120,6 +161,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
+                        selectedDateRange = null; // カレンダー選択をクリア
                         // 同じ日を再度タップしたら選択解除して週データに戻る
                         if (selectedDayIndex == i) {
                           selectedDayIndex = null;
@@ -163,11 +205,55 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
             ),
           ),
           const SizedBox(height: 16),
-          Text(
-            selectedDayIndex != null
-                ? '${days[selectedDayIndex!]} のランキング'
-                : 'ランキング（全期間）',
-            style: Theme.of(context).textTheme.titleMedium,
+          // タップ可能なランキングタイトル
+          GestureDetector(
+            onTap: () => _pickDateRange(context),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              decoration: BoxDecoration(
+                color: selectedDateRange != null
+                    ? Colors.blue.shade50
+                    : Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: selectedDateRange != null
+                      ? Colors.blue
+                      : Colors.grey.shade300,
+                  width: 1.5,
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.calendar_today,
+                    size: 18,
+                    color: selectedDateRange != null
+                        ? Colors.blue
+                        : Colors.grey.shade600,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      getRankingTitle(),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: selectedDateRange != null
+                            ? Colors.blue.shade700
+                            : null,
+                        fontWeight: selectedDateRange != null
+                            ? FontWeight.bold
+                            : null,
+                      ),
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_drop_down,
+                    color: selectedDateRange != null
+                        ? Colors.blue
+                        : Colors.grey.shade600,
+                  ),
+                ],
+              ),
+            ),
           ),
           const SizedBox(height: 8),
           Card(
@@ -193,6 +279,143 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// カスタム期間選択カレンダー
+class CustomDateRangePicker extends StatefulWidget {
+  const CustomDateRangePicker({Key? key}) : super(key: key);
+
+  @override
+  State<CustomDateRangePicker> createState() => _CustomDateRangePickerState();
+}
+
+class _CustomDateRangePickerState extends State<CustomDateRangePicker> {
+  DateTime? _rangeStart;
+  DateTime? _rangeEnd;
+  DateTime _focusedDay = DateTime.now();
+  final DateFormat dateFormat = DateFormat('yyyy年MM月dd日');
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    '期間を選択',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              if (_rangeStart != null || _rangeEnd != null)
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade50,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        _rangeStart != null
+                            ? dateFormat.format(_rangeStart!)
+                            : '開始日',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue.shade700,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      const Text('〜'),
+                      const SizedBox(width: 8),
+                      Text(
+                        _rangeEnd != null
+                            ? dateFormat.format(_rangeEnd!)
+                            : '終了日',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue.shade700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              const SizedBox(height: 16),
+              TableCalendar(
+                firstDay: DateTime(DateTime
+                    .now()
+                    .year - 3),
+                lastDay: DateTime.now(),
+                focusedDay: _focusedDay,
+                locale: 'ja_JP',
+                rangeStartDay: _rangeStart,
+                rangeEndDay: _rangeEnd,
+                rangeSelectionMode: RangeSelectionMode.toggledOn,
+                onDaySelected: (selectedDay, focusedDay) {
+                  if (selectedDay.isAfter(DateTime.now())) return;
+
+                  setState(() {
+                    _focusedDay = focusedDay;
+                    if (_rangeStart == null || _rangeEnd != null) {
+                      // 新しい範囲を開始
+                      _rangeStart = selectedDay;
+                      _rangeEnd = null;
+                    } else if (selectedDay.isBefore(_rangeStart!)) {
+                      // 選択した日が開始日より前なら、開始日を更新
+                      _rangeStart = selectedDay;
+                    } else {
+                      // 終了日を選択したら自動的に確定
+                      _rangeEnd = selectedDay;
+                      Navigator.pop(
+                        context,
+                        DateTimeRange(start: _rangeStart!, end: _rangeEnd!),
+                      );
+                    }
+                  });
+                },
+                calendarStyle: CalendarStyle(
+                  rangeStartDecoration: BoxDecoration(
+                    color: Colors.blue,
+                    shape: BoxShape.circle,
+                  ),
+                  rangeEndDecoration: BoxDecoration(
+                    color: Colors.blue,
+                    shape: BoxShape.circle,
+                  ),
+                  rangeHighlightColor: Colors.blue.shade100,
+                  todayDecoration: BoxDecoration(
+                    color: Colors.orange.shade300,
+                    shape: BoxShape.circle,
+                  ),
+                  selectedDecoration: BoxDecoration(
+                    color: Colors.blue.shade700,
+                    shape: BoxShape.circle,
+                  ),
+                  outsideDaysVisible: false,
+                ),
+                headerStyle: const HeaderStyle(
+                  formatButtonVisible: false,
+                  titleCentered: true,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

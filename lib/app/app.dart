@@ -8,6 +8,7 @@ class ToiletApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Toilet Monitor',
+      locale: const Locale('ja', 'JP'), // 日本語ロケール指定
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
