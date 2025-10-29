@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../domain/settings_model.dart';
+import 'package:flutter/foundation.dart';
 
 class SettingsRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -12,7 +13,7 @@ class SettingsRepository {
       final userCredential = await _auth.signInAnonymously();
       return userCredential.user;
     } catch (e) {
-      print('匿名ログインエラー: $e');
+      debugPrint('匿名ログインエラー: $e');
       return null;
     }
   }
