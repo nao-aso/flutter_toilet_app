@@ -18,30 +18,9 @@ Future<void> _initLocalNotifications() async {
 }
 
 Future<void> main() async {
+  // Firebase を後で入れるなら、ここに initialize を追加します
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await _initLocalNotifications();
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'トイレ混雑モニター',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.blue,
-      ),
-      home: const BottomNavScaffold(),
-    );
-  }
-Future<void> main() async {
-  // Firebase を後で入れるなら、ここに initialize を追加します
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('ja_JP', null);
   runApp(const ToiletApp());
