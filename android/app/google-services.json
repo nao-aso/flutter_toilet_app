@@ -1,21 +1,22 @@
 {
   "project_info": {
-    "project_number": "277642882441",
-    "project_id": "underthrow-sotu",
-    "storage_bucket": "underthrow-sotu.firebasestorage.app"
+    "project_number": "962531189850",
+    "firebase_url": "https://under-throw-9256a-default-rtdb.firebaseio.com",
+    "project_id": "under-throw-9256a",
+    "storage_bucket": "under-throw-9256a.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:277642882441:android:2505757c9d44de9ed28558",
+        "mobilesdk_app_id": "1:962531189850:android:d7cd9bb8a1fac0c158a463",
         "android_client_info": {
-          "package_name": "com.example.flutter_toilet_app"
+          "package_name": "com.underthrow.flutter_toilet_app"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAKAVHbqc84a_AU9liHptLAtYBGyoVKkWg"
+          "current_key": "AIzaSyB-7NxntFheinhNfWlntpagEnT58JCjRbU"
         }
       ],
       "services": {
