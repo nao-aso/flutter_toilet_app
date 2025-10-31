@@ -45,9 +45,9 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
           'floor': data['floor'] ?? '',
           'toilet_id': data['toilet_id'] ?? '',
           'duration_sec': (data['duration_sec'] ?? 0.0).toDouble(),
-          'start_time': (data['start_time'] as Timestamp?)?.toDate(),
-          'end_time': (data['end_time'] as Timestamp?)?.toDate(),
-          'created_at': (data['created_at'] as Timestamp?)?.toDate(),
+          'start_time': (data['start_time'] as Timestamp?)?.toDate().add(Duration(hours: 9)),
+          'end_time': (data['end_time'] as Timestamp?)?.toDate().add(Duration(hours: 9)),
+          'created_at': (data['created_at'] as Timestamp?)?.toDate().add(Duration(hours: 9)),
         });
       }
 
@@ -237,6 +237,13 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
         child: ListView(
           padding: const EdgeInsets.all(12),
           children: [
+            if (selectedDayIndex == null && selectedDateRange == null)
+              const Text(
+                '今週の使用履歴',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            if (selectedDayIndex == null && selectedDateRange == null)
+              const SizedBox(height: 8),
             Text(
               selectedDayIndex != null
                   ? days[selectedDayIndex!]
