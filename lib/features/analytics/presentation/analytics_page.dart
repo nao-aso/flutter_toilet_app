@@ -137,8 +137,12 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
       };
     }).toList();
 
-    // 使用回数でソート
-    ranking.sort((a, b) => (b['count'] as int).compareTo(a['count'] as int));
+    // 累計使用時間でソート
+    ranking.sort((a, b) {
+      final aDuration = floorStats[a['floor']]!['total_duration'] as double;
+      final bDuration = floorStats[b['floor']]!['total_duration'] as double;
+      return bDuration.compareTo(aDuration);
+    });
 
     return ranking;
   }
