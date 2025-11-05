@@ -13,7 +13,7 @@ class BottomNavScaffold extends StatefulWidget {
 class _BottomNavScaffoldState extends State<BottomNavScaffold> {
   int _index = 0;
 
-  // ここに各画面を並べる＝“合体”
+  // 各画面をリストで保持（混雑・集計・設定）
   final _pages = const [
     HomePage(),
     AnalyticsPage(),
@@ -28,9 +28,18 @@ class _BottomNavScaffoldState extends State<BottomNavScaffold> {
         selectedIndex: _index,
         onDestinationSelected: (i) => setState(() => _index = i),
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.wc), label: '混雑'),
-          NavigationDestination(icon: Icon(Icons.bar_chart), label: '集計'),
-          NavigationDestination(icon: Icon(Icons.settings), label: '設定'),
+          NavigationDestination(
+            icon: Icon(Icons.wc), // 🚻 トイレアイコン（混雑）
+            label: '混雑',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.bar_chart), // 📊 棒グラフアイコン（集計）
+            label: '集計',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.settings), // ⚙️ 設定アイコン
+            label: '設定',
+          ),
         ],
       ),
     );
