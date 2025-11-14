@@ -13,7 +13,7 @@ class AnalyticsPage extends StatefulWidget {
 class _AnalyticsPageState extends State<AnalyticsPage> {
   int? selectedDayIndex;
   DateTimeRange? selectedDateRange;
-  final DateFormat dateFormat = DateFormat('yyyy年MM月dd日');
+  final DateFormat dateFormat = DateFormat('yyyy/MM/dd');
 
   List<Map<String, dynamic>> allUsageLogs = [];
   bool isLoading = true;
@@ -180,6 +180,106 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
     }
   }
 
+  Future<void> _showDayDetailDialog(BuildContext context, int dayIndex, String dayLabel) async {
+    final targetDate = DateTime.now().subtract(Duration(days: 6 - dayIndex));
+    final dayLogs = allUsageLogs.where((log) {
+      final createdAt = log['created_at'] as DateTime?;
+      if (createdAt == null) return false;
+      return createdAt.year == targetDate.year &&
+          createdAt.month == targetDate.month &&
+          createdAt.day == targetDate.day;
+    }).toList();
+
+    // 階ごとに集計
+    Map<String, Map<String, dynamic>> floorStats = {};
+    for (var log in dayLogs) {
+      final floor = log['floor'] as String;
+      final duration = log['duration_sec'] as double;
+
+      if (!floorStats.containsKey(floor)) {
+        floorStats[floor] = {'floor': floor, 'count': 0, 'total_duration': 0.0};
+      }
+
+      floorStats[floor]!['count'] = (floorStats[floor]!['count'] as int) + 1;
+      floorStats[floor]!['total_duration'] =
+          (floorStats[floor]!['total_duration'] as double) + duration;
+    }
+
+    List<Map<String, dynamic>> ranking = floorStats.values.map((stats) {
+      final totalSeconds = stats['total_duration'] as double;
+      final hours = (totalSeconds / 3600).floor();
+      final minutes = ((totalSeconds % 3600) / 60).floor();
+
+      return {
+        'floor': stats['floor'],
+        'count': stats['count'],
+        'time': '${hours}h ${minutes}m',
+      };
+    }).toList();
+
+    ranking.sort((a, b) {
+      final aDuration = floorStats[a['floor']]!['total_duration'] as double;
+      final bDuration = floorStats[b['floor']]!['total_duration'] as double;
+      return bDuration.compareTo(aDuration);
+    });
+
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '$dayLabel の詳細',
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              if (ranking.isEmpty)
+                const Padding(
+                  padding: EdgeInsets.all(32.0),
+                  child: Text('データがありません'),
+                )
+              else
+                SingleChildScrollView(
+                  child: DataTable(
+                    columnSpacing: 20,
+                    columns: const [
+                      DataColumn(label: Text('階')),
+                      DataColumn(label: Text('使用回数')),
+                      DataColumn(label: Text('累計時間')),
+                      DataColumn(label: Text('順位')),
+                    ],
+                    rows: List.generate(ranking.length, (index) {
+                      final data = ranking[index];
+                      return DataRow(
+                        cells: [
+                          DataCell(Text(data['floor'].toString())),
+                          DataCell(Text('${data['count']}回')),
+                          DataCell(Text(data['time'].toString())),
+                          DataCell(Text('${index + 1}位')),
+                        ],
+                      );
+                    }),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
@@ -237,17 +337,10 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
         child: ListView(
           padding: const EdgeInsets.all(12),
           children: [
-            if (selectedDayIndex == null && selectedDateRange == null)
-              const Text(
-                '今週の使用履歴',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            if (selectedDayIndex == null && selectedDateRange == null)
-              const SizedBox(height: 8),
             Text(
               selectedDayIndex != null
-                  ? days[selectedDayIndex!]
-                  : formatDateRange(),
+                  ? '${days[selectedDayIndex!]} の使用履歴'
+                  : '${formatDateRange()} の使用履歴',
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 12),
@@ -272,6 +365,8 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                             selectedDayIndex = null;
                           } else {
                             selectedDayIndex = i;
+                            // ポップアップを表示
+                            _showDayDetailDialog(context, i, days[i]);
                           }
                         });
                       },
@@ -435,7 +530,7 @@ class _CustomDateRangePickerState extends State<CustomDateRangePicker> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
   DateTime _focusedDay = DateTime.now();
-  final DateFormat dateFormat = DateFormat('yyyy年MM月dd日');
+  final DateFormat dateFormat = DateFormat('yyyy/MM/dd');
 
   @override
   Widget build(BuildContext context) {
