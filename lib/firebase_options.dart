@@ -90,4 +90,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'under-throw-9256a.firebasestorage.app',
     measurementId: 'G-XH1D1RE923',
   );
+
 }
