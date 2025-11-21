@@ -1,0 +1,18 @@
+{
+  "appTitle": "Toilet Congestion App",
+  "settingsTitle": "Settings",
+  "darkTheme": "Dark Theme",
+  "languageSetting": "Language Setting",
+  "languageJapanese": "Japanese",
+  "languageEnglish": "English",
+  "restartRequired": "Restart Required",
+  "restartDescription": "Please restart the app to apply language changes.",
+  "ok": "OK",
+  "homeTitle": "Building 1 - Toilet Status",
+  "waitingNotification": "Notify Me",
+  "toiletAvailable": "Toilet is available",
+  "floorAvailable": "A stall is now available on {floor}.",
+  "analyticsTitle": "Analytics",
+  "noData": "No data available"
+
+}

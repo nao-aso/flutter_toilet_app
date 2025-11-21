@@ -1,0 +1,18 @@
+{
+  "appTitle": "トイレ混雑アプリ",
+  "settingsTitle": "設定",
+  "darkTheme": "ダークテーマ",
+  "languageSetting": "言語設定",
+  "languageJapanese": "日本語",
+  "languageEnglish": "English",
+  "restartRequired": "再起動が必要です",
+  "restartDescription": "言語設定を反映するにはアプリを再起動してください。",
+  "ok": "OK",
+  "homeTitle": "1号館 - トイレ混雑表示",
+  "waitingNotification": "待ち通知",
+  "toiletAvailable": "トイレが空きました",
+  "floorAvailable": "{floor} に空きが出ました。",
+  "analyticsTitle": "集計",
+  "noData": "データがありません"
+
+}
