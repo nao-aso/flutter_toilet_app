@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../../../main.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
-// ★ 多言語（正しいパス）
-import '../../../l10n/app_localizations.dart';
+import '../../../main.dart'; // localNotifications を使用
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final Map<String, bool> waitingFloors = {};
 
-  Future<void> _showLocalNotification(String floor, AppLocalizations loc) async {
+  Future<void> _showLocalNotification(String floor) async {
     const androidDetails = AndroidNotificationDetails(
       'toilet_channel',
       '待ち通知',
@@ -30,13 +27,13 @@ class _HomePageState extends State<HomePage> {
 
     await localNotifications.show(
       0,
-      loc.toiletAvailable, // トイレが空きました
-      loc.floorAvailable(floor), // {floor} に空きが出ました
+      'トイレが空きました',
+      '$floor に空きが出ました。',
       notificationDetails,
     );
   }
 
-  void _startWaiting(String floor, AppLocalizations loc) {
+  void _startWaiting(String floor) {
     waitingFloors[floor] = true;
 
     _firestore
@@ -45,11 +42,11 @@ class _HomePageState extends State<HomePage> {
         .snapshots()
         .listen((snapshot) {
       final total = snapshot.docs.length;
-      final inUse =
-          snapshot.docs.where((doc) => doc['door_status'] == 'closed').length;
-
+      final inUse = snapshot.docs
+          .where((doc) => doc['door_status'] == 'closed')
+          .length;
       if (inUse < total && (waitingFloors[floor] ?? false)) {
-        _showLocalNotification(floor, loc);
+        _showLocalNotification(floor);
         waitingFloors[floor] = false;
       }
     });
@@ -57,12 +54,12 @@ class _HomePageState extends State<HomePage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(loc.waitingNotification),
-        content: Text(loc.toiletAvailable),
+        title: const Text('待ち通知を設定しました'),
+        content: const Text('空きが出た際に通知でお知らせします。'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(loc.ok),
+            child: const Text('OK'),
           ),
         ],
       ),
@@ -71,12 +68,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final loc = AppLocalizations.of(context)!;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(loc.homeTitle), // ← 多言語化 OK
+        title: const Text('1号館 - トイレ混雑表示'),
         centerTitle: true,
+
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _firestore.collection('toilets').snapshots(),
@@ -86,14 +82,14 @@ class _HomePageState extends State<HomePage> {
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text(loc.noData));
+            return const Center(child: Text('データがありません'));
           }
 
           final docs = snapshot.data!.docs;
           final floors = <String, List<QueryDocumentSnapshot>>{};
 
           for (var doc in docs) {
-            final floor = doc['floor'] ?? '???';
+            final floor = doc['floor'] ?? '不明';
             floors.putIfAbsent(floor, () => []).add(doc);
           }
 
@@ -111,26 +107,38 @@ class _HomePageState extends State<HomePage> {
               final isFull = inUse == total;
 
               return Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16, vertical: 6),
+                padding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                 child: Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: Colors.grey.shade300),
                     color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade200,
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // フロア名
-                      Text(
-                        floor,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                      // 左：フロア名
+                      SizedBox(
+                        width: 50,
+                        child: Text(
+                          floor,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
 
-                      // 使用数
+                      // 中央：人アイコンと使用数
                       Row(
                         children: [
                           Icon(
@@ -142,16 +150,35 @@ class _HomePageState extends State<HomePage> {
                           Text(
                             '$inUse / $total',
                             style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
 
-                      // 待ち通知
+                      // 右：待ち通知ボタン
                       ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                          isFull ? Colors.white : Colors.grey.shade300,
+                          side: BorderSide(
+                            color: isFull
+                                ? Colors.grey.shade400
+                                : Colors.grey.shade300,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                        ),
                         onPressed:
-                        isFull ? () => _startWaiting(floor, loc) : null,
-                        child: Text(loc.waitingNotification),
+                        isFull ? () => _startWaiting(floor) : null,
+                        child: Text(
+                          '待ち通知',
+                          style: TextStyle(
+                            color:
+                            isFull ? Colors.black : Colors.grey.shade600,
+                          ),
+                        ),
                       ),
                     ],
                   ),
