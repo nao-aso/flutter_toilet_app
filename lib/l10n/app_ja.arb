@@ -8,11 +8,19 @@
   "restartRequired": "再起動が必要です",
   "restartDescription": "言語設定を反映するにはアプリを再起動してください。",
   "ok": "OK",
-  "homeTitle": "1号館 - トイレ混雑表示",
+  "homeTitle": "1号館-トイレ混雑表示",
   "waitingNotification": "待ち通知",
   "toiletAvailable": "トイレが空きました",
   "floorAvailable": "{floor} に空きが出ました。",
+  "@floorAvailable": {
+    "placeholders": {
+      "floor": {}
+    }
+  },
   "analyticsTitle": "集計",
+  "maleCrowdTitle": "男子トイレ",
+  "femaleCrowdTitle": "女子トイレ",
+  "waitingNotificationTitle": "待ち通知を設定しました",
+  "waitingNotificationDescription": "空きが出た際に通知でお知らせします。",
   "noData": "データがありません"
-
 }

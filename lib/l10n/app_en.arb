@@ -11,8 +11,16 @@
   "homeTitle": "Building 1 - Toilet Status",
   "waitingNotification": "Notify Me",
   "toiletAvailable": "Toilet is available",
-  "floorAvailable": "A stall is now available on {floor}.",
+  "floorAvailable": "{floor} is available.",
+  "@floorAvailable": {
+    "placeholders": {
+      "floor": {}
+    }
+  },
   "analyticsTitle": "Analytics",
+  "maleCrowdTitle": "Men's",
+  "femaleCrowdTitle": "Women's",
+  "waitingNotificationTitle": "Waiting Notification Set",
+  "waitingNotificationDescription": "You will be notified when a stall becomes available.",
   "noData": "No data available"
-
 }

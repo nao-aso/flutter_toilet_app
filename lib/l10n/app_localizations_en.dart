@@ -46,11 +46,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String floorAvailable(Object floor) {
-    return 'A stall is now available on $floor.';
+    return '$floor is available.';
   }
 
   @override
   String get analyticsTitle => 'Analytics';
+
+  @override
+  String get maleCrowdTitle => 'Men\'s';
+
+  @override
+  String get femaleCrowdTitle => 'Women\'s';
+
+  @override
+  String get maleToilet => 'The men\'s toilet is now free.';
+
+  @override
+  String get femaleToilet => 'The women\'s toilet is now free.';
+
+  @override
+  String get waitingNotificationTitle => 'Waiting Notification Set';
+
+  @override
+  String get waitingNotificationDescription => 'You will be notified when a stall becomes available.';
 
   @override
   String get noData => 'No data available';

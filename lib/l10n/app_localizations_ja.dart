@@ -36,7 +36,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get ok => 'OK';
 
   @override
-  String get homeTitle => '1号館 - トイレ混雑表示';
+  String get homeTitle => '1号館-トイレ混雑表示';
 
   @override
   String get waitingNotification => '待ち通知';
@@ -51,6 +51,24 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get analyticsTitle => '集計';
+
+  @override
+  String get maleCrowdTitle => '男子トイレ';
+
+  @override
+  String get femaleCrowdTitle => '女子トイレ';
+
+  @override
+  String get maleToilet => '男子トイレが空きました';
+
+  @override
+  String get femaleToilet => '女子トイレが空きました';
+
+  @override
+  String get waitingNotificationTitle => '待ち通知を設定しました';
+
+  @override
+  String get waitingNotificationDescription => '空きが出た際に通知でお知らせします。';
 
   @override
   String get noData => 'データがありません';

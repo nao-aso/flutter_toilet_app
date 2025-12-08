@@ -1,4 +1,4 @@
-  import 'dart:async';
+import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -170,7 +170,7 @@ abstract class AppLocalizations {
   /// No description provided for @floorAvailable.
   ///
   /// In en, this message translates to:
-  /// **'A stall is now available on {floor}.'**
+  /// **'{floor} is available.'**
   String floorAvailable(Object floor);
 
   /// No description provided for @analyticsTitle.
@@ -178,6 +178,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Analytics'**
   String get analyticsTitle;
+
+  /// No description provided for @maleCrowdTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Men\'s'**
+  String get maleCrowdTitle;
+
+  /// No description provided for @femaleCrowdTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Women\'s'**
+  String get femaleCrowdTitle;
+
+  /// No description provided for @maleToilet.
+  ///
+  /// In en, this message translates to:
+  /// **'The men\'s toilet is now free.'**
+  String get maleToilet;
+
+  /// No description provided for @femaleToilet.
+  ///
+  /// In en, this message translates to:
+  /// **'The women\'s toilet is now free.'**
+  String get femaleToilet;
+
+  /// No description provided for @waitingNotificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting Notification Set'**
+  String get waitingNotificationTitle;
+
+  /// No description provided for @waitingNotificationDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You will be notified when a stall becomes available.'**
+  String get waitingNotificationDescription;
 
   /// No description provided for @noData.
   ///
