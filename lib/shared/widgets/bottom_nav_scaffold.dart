@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
-import '../../../features/home/presentation/home_page.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart'; // ★追加
+
+// ★ インポートパスを修正・追加
+import '../../../features/home/presentation/male_crowd_page.dart';
+import '../../../features/home/presentation/female_crowd_page.dart';
 import '../../../features/analytics/presentation/analytics_page.dart';
 import '../../../features/settings/presentation/settings_page.dart';
+
+// ★ 多言語
+import '../../../l10n/app_localizations.dart';
 
 class BottomNavScaffold extends StatefulWidget {
   const BottomNavScaffold({super.key});
@@ -13,32 +20,39 @@ class BottomNavScaffold extends StatefulWidget {
 class _BottomNavScaffoldState extends State<BottomNavScaffold> {
   int _index = 0;
 
-  // 各画面をリストで保持（混雑・集計・設定）
   final _pages = const [
-    HomePage(),
-    AnalyticsPage(),
-    SettingsPage(),
+    MaleCrowdPage(),   // 0: 男子
+    FemaleCrowdPage(), // 1: 女子
+    AnalyticsPage(),   // 2: 分析
+    SettingsPage(),    // 3: 設定
   ];
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: _pages[_index],
       bottomNavigationBar: NavigationBar(
         selectedIndex: _index,
         onDestinationSelected: (i) => setState(() => _index = i),
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            icon: Icon(Icons.wc), // 🚻 トイレアイコン（混雑）
-            label: '混雑',
+            // Font Awesome のトイレアイコンに変更
+            icon: const Icon(FontAwesomeIcons.person),
+            label: loc.maleCrowdTitle, // ARBのキー
           ),
           NavigationDestination(
-            icon: Icon(Icons.bar_chart), // 📊 棒グラフアイコン（集計）
-            label: '集計',
+            icon: const Icon(FontAwesomeIcons.personDress),
+            label: loc.femaleCrowdTitle, // ARBのキー
           ),
           NavigationDestination(
-            icon: Icon(Icons.settings), // ⚙️ 設定アイコン
-            label: '設定',
+            icon: const Icon(Icons.bar_chart),
+            label: loc.analyticsTitle,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.settings),
+            label: loc.settingsTitle,
           ),
         ],
       ),

@@ -1,0 +1,33 @@
+{
+  "appTitle": "Toilet Congestion App",
+  "settingsTitle": "Settings",
+  "darkTheme": "Dark Theme",
+  "languageSetting": "Language Setting",
+  "languageJapanese": "Japanese",
+  "languageEnglish": "English",
+  "restartRequired": "Restart Required",
+  "restartDescription": "Please restart the app to apply language changes.",
+  "ok": "OK",
+  "homeTitle": "Building 1 - Toilet Status",
+  "waitingNotification": "Notify Me",
+  "toiletAvailable": "Toilet is available",
+
+  "floorAvailable": "{floor} is available.",
+  "@floorAvailable": {
+    "placeholders": { "floor": {} }
+  },
+
+  "analyticsTitle": "Analytics",
+  "selectPeriod": "Select period",
+  "floorLabel": "Floor",
+  "usageCountLabel": "Usage Count",
+  "rankLabel": "Rank",
+  "rankSuffix": "th",
+  "noData": "No data available",
+
+  "termsTitle": "Terms of Service",
+  "termsBody": "Please read the following terms carefully before using this app.\n\n1. We are not responsible for any damages.\n2. Usage data may be collected to improve the service.\n3. You must not misuse this application.\n\nBy checking the box below, you agree to these terms.",
+  "agreeTerms": "I agree to the Terms of Service",
+  "continueLabel": "Continue",
+  "termsShortcutDescription": "Open terms of service"
+}
