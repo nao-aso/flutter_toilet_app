@@ -46,7 +46,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String floorAvailable(Object floor) {
-    return 'A stall is now available on $floor.';
+    return '$floor is available.';
   }
 
   @override
@@ -74,7 +74,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get termsTitle => 'Terms of Service';
 
   @override
-  String get termsBody => 'Please read the following terms carefully before using this app.\n\n1. We are not responsible for any damages.\n2. Usage data may be collected to improve the service.\n3. You must not misuse this application.\n\nBy checking the box below, you agree to these terms.';
+  String get termsBody =>
+      'Please read the following terms carefully before using this app.\n\n'
+          '1. We are not responsible for any damages.\n'
+          '2. Usage data may be collected to improve the service.\n'
+          '3. You must not misuse this application.\n\n'
+          'By checking the box below, you agree to these terms.';
 
   @override
   String get agreeTerms => 'I agree to the Terms of Service';

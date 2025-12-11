@@ -11,7 +11,12 @@
   "homeTitle": "Building 1 - Toilet Status",
   "waitingNotification": "Notify Me",
   "toiletAvailable": "Toilet is available",
-  "floorAvailable": "A stall is now available on {floor}.",
+
+  "floorAvailable": "{floor} is available.",
+  "@floorAvailable": {
+    "placeholders": { "floor": {} }
+  },
+
   "analyticsTitle": "Analytics",
   "selectPeriod": "Select period",
   "floorLabel": "Floor",
@@ -25,5 +30,4 @@
   "agreeTerms": "I agree to the Terms of Service",
   "continueLabel": "Continue",
   "termsShortcutDescription": "Open terms of service"
-
 }

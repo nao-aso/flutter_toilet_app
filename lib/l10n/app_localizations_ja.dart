@@ -30,7 +30,8 @@ class AppLocalizationsJa extends AppLocalizations {
   String get restartRequired => '再起動が必要です';
 
   @override
-  String get restartDescription => '言語設定を反映するにはアプリを再起動してください。';
+  String get restartDescription =>
+      '言語設定を反映するにはアプリを再起動してください。';
 
   @override
   String get ok => 'OK';
@@ -74,7 +75,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get termsTitle => '利用規約';
 
   @override
-  String get termsBody => '【利用規約】\n\nこのアプリを利用する前に以下の利用規約をよく読み、同意した上でご利用ください。\n\n1. 本アプリの利用により発生した損害について、開発者は責任を負いません。\n2. 解析データはサービス向上のために使用する場合があります。\n3. ユーザーは本アプリを不正利用してはなりません。\n\n上記を理解した上でご利用ください。';
+  String get termsBody =>
+      '【利用規約】\n\n'
+          'このアプリを利用する前に以下の利用規約をよく読み、同意した上でご利用ください。\n\n'
+          '1. 本アプリの利用により発生した損害について、開発者は責任を負いません。\n'
+          '2. 解析データはサービス向上のために使用する場合があります。\n'
+          '3. ユーザーは本アプリを不正利用してはなりません。\n\n'
+          '上記を理解した上でご利用ください。';
 
   @override
   String get agreeTerms => '利用規約に同意します';

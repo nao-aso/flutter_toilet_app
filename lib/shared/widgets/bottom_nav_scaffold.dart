@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../features/home/presentation/home_page.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart'; // ★追加
+
+// ★ インポートパスを修正・追加
+import '../../../features/home/presentation/male_crowd_page.dart';
+import '../../../features/home/presentation/female_crowd_page.dart';
 import '../../../features/analytics/presentation/analytics_page.dart';
 import '../../../features/settings/presentation/settings_page.dart';
 
@@ -17,9 +21,10 @@ class _BottomNavScaffoldState extends State<BottomNavScaffold> {
   int _index = 0;
 
   final _pages = const [
-    HomePage(),
-    AnalyticsPage(),
-    SettingsPage(),
+    MaleCrowdPage(),   // 0: 男子
+    FemaleCrowdPage(), // 1: 女子
+    AnalyticsPage(),   // 2: 分析
+    SettingsPage(),    // 3: 設定
   ];
 
   @override
@@ -33,16 +38,21 @@ class _BottomNavScaffoldState extends State<BottomNavScaffold> {
         onDestinationSelected: (i) => setState(() => _index = i),
         destinations: [
           NavigationDestination(
-            icon: const Icon(Icons.wc),
-            label: loc.homeTitle,     // ←混雑
+            // Font Awesome のトイレアイコンに変更
+            icon: const Icon(FontAwesomeIcons.person),
+            label: loc.maleCrowdTitle, // ARBのキー
+          ),
+          NavigationDestination(
+            icon: const Icon(FontAwesomeIcons.personDress),
+            label: loc.femaleCrowdTitle, // ARBのキー
           ),
           NavigationDestination(
             icon: const Icon(Icons.bar_chart),
-            label: loc.analyticsTitle, // ←集計（後でARB追加する）
+            label: loc.analyticsTitle,
           ),
           NavigationDestination(
             icon: const Icon(Icons.settings),
-            label: loc.settingsTitle, // ←設定
+            label: loc.settingsTitle,
           ),
         ],
       ),

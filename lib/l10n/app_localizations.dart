@@ -170,7 +170,11 @@ abstract class AppLocalizations {
   /// No description provided for @floorAvailable.
   ///
   /// In en, this message translates to:
+<<<<<<< HEAD
   /// **'A stall is now available on {floor}.'**
+=======
+  /// **'{floor} is available.'**
+>>>>>>> ebbb4254758f62160ee5df0f5d87a5219c2ea506
   String floorAvailable(Object floor);
 
   /// No description provided for @analyticsTitle.
@@ -179,6 +183,7 @@ abstract class AppLocalizations {
   /// **'Analytics'**
   String get analyticsTitle;
 
+<<<<<<< HEAD
   /// No description provided for @selectPeriod.
   ///
   /// In en, this message translates to:
@@ -208,12 +213,50 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'th'**
   String get rankSuffix;
+=======
+  /// No description provided for @maleCrowdTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Men\'s'**
+  String get maleCrowdTitle;
+
+  /// No description provided for @femaleCrowdTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Women\'s'**
+  String get femaleCrowdTitle;
+
+  /// No description provided for @maleToilet.
+  ///
+  /// In en, this message translates to:
+  /// **'The men\'s toilet is now free.'**
+  String get maleToilet;
+
+  /// No description provided for @femaleToilet.
+  ///
+  /// In en, this message translates to:
+  /// **'The women\'s toilet is now free.'**
+  String get femaleToilet;
+
+  /// No description provided for @waitingNotificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting Notification Set'**
+  String get waitingNotificationTitle;
+
+  /// No description provided for @waitingNotificationDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You will be notified when a stall becomes available.'**
+  String get waitingNotificationDescription;
+>>>>>>> ebbb4254758f62160ee5df0f5d87a5219c2ea506
 
   /// No description provided for @noData.
   ///
   /// In en, this message translates to:
   /// **'No data available'**
   String get noData;
+<<<<<<< HEAD
 
   /// No description provided for @termsTitle.
   ///
@@ -244,6 +287,8 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open terms of service'**
   String get termsShortcutDescription;
+=======
+>>>>>>> ebbb4254758f62160ee5df0f5d87a5219c2ea506
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
