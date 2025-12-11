@@ -1,33 +1,87 @@
 {
-  "appTitle": "Toilet Congestion App",
-  "settingsTitle": "Settings",
-  "darkTheme": "Dark Theme",
-  "languageSetting": "Language Setting",
-  "languageJapanese": "Japanese",
-  "languageEnglish": "English",
-  "restartRequired": "Restart Required",
-  "restartDescription": "Please restart the app to apply language changes.",
-  "ok": "OK",
-  "homeTitle": "Building 1 - Toilet Status",
-  "waitingNotification": "Notify Me",
-  "toiletAvailable": "Toilet is available",
-
-  "floorAvailable": "{floor} is available.",
-  "@floorAvailable": {
-    "placeholders": { "floor": {} }
-  },
-
-  "analyticsTitle": "Analytics",
-  "selectPeriod": "Select period",
-  "floorLabel": "Floor",
-  "usageCountLabel": "Usage Count",
-  "rankLabel": "Rank",
-  "rankSuffix": "th",
-  "noData": "No data available",
-
-  "termsTitle": "Terms of Service",
-  "termsBody": "Please read the following terms carefully before using this app.\n\n1. We are not responsible for any damages.\n2. Usage data may be collected to improve the service.\n3. You must not misuse this application.\n\nBy checking the box below, you agree to these terms.",
-  "agreeTerms": "I agree to the Terms of Service",
-  "continueLabel": "Continue",
-  "termsShortcutDescription": "Open terms of service"
+    "appTitle": "Toilet Congestion App",
+    "settingsTitle": "Settings",
+    "darkTheme": "Dark Theme",
+    "languageSetting": "Language Setting",
+    "languageJapanese": "Japanese",
+    "languageEnglish": "English",
+    "restartRequired": "Restart Required",
+    "restartDescription": "Please restart the app to apply language changes.",
+    "ok": "OK",
+    "homeTitle": "Building 1 - Toilet Status",
+    "crowdTitle": "Congestion",
+    "waitingNotification": "Notify Me",
+    "toiletAvailable": "Toilet is available",
+    "floorAvailable": "{floor} is available.",
+    "@floorAvailable": {
+      "placeholders": {
+        "floor": {}
+      }
+    },
+    "termsTitle": "Terms of Service",
+    "termsBody": "Please read the following terms carefully before using this app.\n\n1. We are not responsible for any damages.\n2. Usage data may be collected to improve the service.\n3. You must not misuse this application.\n\nBy checking the box below, you agree to these terms.",
+    "agreeTerms": "I agree to the Terms of Service",
+    "continueLabel": "Continue",
+    "termsShortcutDescription": "Open terms of service",
+    "analyticsTitle": "Analytics",
+    "maleCrowdTitle": "Men's",
+    "femaleCrowdTitle": "Women's",
+    "waitingNotificationTitle": "Waiting Notification Set",
+    "waitingNotificationDescription": "You will be notified when a stall becomes available.",
+    "noData": "No data available",
+    "errorTitle": "Feature Restricted",
+    "femaleCrowdDisabledMessage": "Cannot move to the women's congestion screen at this time.",
+    "femaleAnalyticsDisabledMessage": "Cannot move to the women's analytics screen at this time.",
+    "refreshData": "Reload Data",
+    "selectPeriod": "Select Period",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "floor": "Floor",
+    "usageCount": "Usage Count",
+    "totalUsageTime": "Total Usage Time",
+    "totalTime": "Total Time",
+    "ranking": "Rank",
+    "dailyHistory": "Usage History for {day}",
+    "@dailyHistory": {
+      "placeholders": {
+        "day": {}
+      }
+    },
+    "periodHistory": "Usage History for {range}",
+    "@periodHistory": {
+      "placeholders": {
+        "range": {}
+      }
+    },
+    "rankingDay": "Ranking for {day}",
+    "@rankingDay": {
+      "placeholders": {
+        "day": {}
+      }
+    },
+    "rankingDateRange": "Ranking from {start} to {end}",
+    "@rankingDateRange": {
+      "placeholders": {
+        "start": {},
+        "end": {}
+      }
+    },
+    "getDailyDetailTitle": "Details for {day}",
+    "@getDailyDetailTitle": {
+      "placeholders": {
+        "day": {}
+      }
+    },
+    "countUnit": "{count} times",
+    "@countUnit": {
+      "placeholders": {
+        "count": {}
+      }
+    },
+    "rankingUnit": "Rank {rank}",
+    "@rankingUnit": {
+      "placeholders": {
+        "rank": {}
+      }
+    }
 }

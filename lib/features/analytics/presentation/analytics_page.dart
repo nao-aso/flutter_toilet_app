@@ -1,7 +1,659 @@
-import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:flutter/material.dart';
+// import 'package:intl/intl.dart';
+// import 'package:table_calendar/table_calendar.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+//
+// class AnalyticsPage extends StatefulWidget {
+//   const AnalyticsPage({super.key});
+//
+//   @override
+//   State<AnalyticsPage> createState() => _AnalyticsPageState();
+// }
+//
+// class _AnalyticsPageState extends State<AnalyticsPage> {
+//   int? selectedDayIndex;
+//   DateTimeRange? selectedDateRange;
+//   final DateFormat dateFormat = DateFormat('yyyy/MM/dd');
+//
+//   List<Map<String, dynamic>> allUsageLogs = [];
+//   bool isLoading = true;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _fetchUsageLogs();
+//   }
+//
+//   // Firestoreからデータ取得
+//   Future<void> _fetchUsageLogs() async {
+//     setState(() {
+//       isLoading = true;
+//     });
+//
+//     try {
+//       final db = FirebaseFirestore.instance;
+//       final snapshot = await db
+//           .collection('usage_logs')
+//           .orderBy('created_at', descending: true)
+//           .get();
+//
+//       List<Map<String, dynamic>> logs = [];
+//       for (var doc in snapshot.docs) {
+//         final data = doc.data();
+//         logs.add({
+//           'id': doc.id,
+//           'floor': data['floor'] ?? '',
+//           'toilet_id': data['toilet_id'] ?? '',
+//           'duration_sec': (data['duration_sec'] ?? 0.0).toDouble(),
+//           'start_time': (data['start_time'] as Timestamp?)?.toDate().add(Duration(hours: 9)),
+//           'end_time': (data['end_time'] as Timestamp?)?.toDate().add(Duration(hours: 9)),
+//           'created_at': (data['created_at'] as Timestamp?)?.toDate().add(Duration(hours: 9)),
+//         });
+//       }
+//
+//       setState(() {
+//         allUsageLogs = logs;
+//         isLoading = false;
+//       });
+//     } catch (e) {
+//       debugPrint('Error fetching data: $e');
+//       setState(() {
+//         isLoading = false;
+//       });
+//     }
+//   }
+//
+//   // 期間でフィルタリングされたデータを取得
+//   List<Map<String, dynamic>> _getFilteredLogs() {
+//     if (selectedDateRange != null) {
+//       return allUsageLogs.where((log) {
+//         final createdAt = log['created_at'] as DateTime?;
+//         if (createdAt == null) return false;
+//         final startOfDay = DateTime(selectedDateRange!.start.year,
+//             selectedDateRange!.start.month, selectedDateRange!.start.day);
+//         final endOfDay = DateTime(selectedDateRange!.end.year,
+//             selectedDateRange!.end.month, selectedDateRange!.end.day, 23, 59, 59);
+//         return createdAt.isAfter(startOfDay) && createdAt.isBefore(endOfDay);
+//       }).toList();
+//     } else if (selectedDayIndex != null) {
+//       final targetDate = DateTime.now().subtract(Duration(days: 6 - selectedDayIndex!));
+//       return allUsageLogs.where((log) {
+//         final createdAt = log['created_at'] as DateTime?;
+//         if (createdAt == null) return false;
+//         return createdAt.year == targetDate.year &&
+//             createdAt.month == targetDate.month &&
+//             createdAt.day == targetDate.day;
+//       }).toList();
+//     } else {
+//       // 過去7日間のデータ
+//       final sevenDaysAgo = DateTime.now().subtract(const Duration(days: 6));
+//       final startOfDay = DateTime(sevenDaysAgo.year, sevenDaysAgo.month, sevenDaysAgo.day);
+//       return allUsageLogs.where((log) {
+//         final createdAt = log['created_at'] as DateTime?;
+//         if (createdAt == null) return false;
+//         return createdAt.isAfter(startOfDay);
+//       }).toList();
+//     }
+//   }
+//
+//   // 階ごとのランキングデータを生成
+//   List<Map<String, dynamic>> _generateRanking() {
+//     final filteredLogs = _getFilteredLogs();
+//
+//     if (filteredLogs.isEmpty) {
+//       return [];
+//     }
+//
+//     // 階ごとに集計
+//     Map<String, Map<String, dynamic>> floorStats = {};
+//
+//     for (var log in filteredLogs) {
+//       final floor = log['floor'] as String;
+//       final duration = log['duration_sec'] as double;
+//
+//       if (!floorStats.containsKey(floor)) {
+//         floorStats[floor] = {
+//           'floor': floor,
+//           'count': 0,
+//           'total_duration': 0.0,
+//         };
+//       }
+//
+//       floorStats[floor]!['count'] = (floorStats[floor]!['count'] as int) + 1;
+//       floorStats[floor]!['total_duration'] =
+//           (floorStats[floor]!['total_duration'] as double) + duration;
+//     }
+//
+//     // ランキング用のリストに変換
+//     List<Map<String, dynamic>> ranking = floorStats.values.map((stats) {
+//       final totalSeconds = stats['total_duration'] as double;
+//       final hours = (totalSeconds / 3600).floor();
+//       final minutes = ((totalSeconds % 3600) / 60).floor();
+//
+//       return {
+//         'floor': stats['floor'],
+//         'count': stats['count'],
+//         'time': '${hours}h ${minutes}m',
+//       };
+//     }).toList();
+//
+//     // 累計使用時間でソート
+//     ranking.sort((a, b) {
+//       final aDuration = floorStats[a['floor']]!['total_duration'] as double;
+//       final bDuration = floorStats[b['floor']]!['total_duration'] as double;
+//       return bDuration.compareTo(aDuration);
+//     });
+//
+//     return ranking;
+//   }
+//
+//   // 日ごとの使用回数を取得（バーグラフ用）
+//   List<int> _getDailyCounts() {
+//     List<int> counts = List.filled(7, 0);
+//
+//     for (int i = 0; i < 7; i++) {
+//       final targetDate = DateTime.now().subtract(Duration(days: 6 - i));
+//       final count = allUsageLogs.where((log) {
+//         final createdAt = log['created_at'] as DateTime?;
+//         if (createdAt == null) return false;
+//         return createdAt.year == targetDate.year &&
+//             createdAt.month == targetDate.month &&
+//             createdAt.day == targetDate.day;
+//       }).length;
+//       counts[i] = count;
+//     }
+//
+//     return counts;
+//   }
+//
+//   Future<void> _pickDateRange(BuildContext context) async {
+//     final result = await showDialog<DateTimeRange>(
+//       context: context,
+//       builder: (context) => const CustomDateRangePicker(),
+//     );
+//
+//     if (result != null) {
+//       setState(() {
+//         selectedDateRange = result;
+//         selectedDayIndex = null;
+//       });
+//     }
+//   }
+//
+//   Future<void> _showDayDetailDialog(BuildContext context, int dayIndex, String dayLabel) async {
+//     final targetDate = DateTime.now().subtract(Duration(days: 6 - dayIndex));
+//     final dayLogs = allUsageLogs.where((log) {
+//       final createdAt = log['created_at'] as DateTime?;
+//       if (createdAt == null) return false;
+//       return createdAt.year == targetDate.year &&
+//           createdAt.month == targetDate.month &&
+//           createdAt.day == targetDate.day;
+//     }).toList();
+//
+//     // 階ごとに集計
+//     Map<String, Map<String, dynamic>> floorStats = {};
+//     for (var log in dayLogs) {
+//       final floor = log['floor'] as String;
+//       final duration = log['duration_sec'] as double;
+//
+//       if (!floorStats.containsKey(floor)) {
+//         floorStats[floor] = {'floor': floor, 'count': 0, 'total_duration': 0.0};
+//       }
+//
+//       floorStats[floor]!['count'] = (floorStats[floor]!['count'] as int) + 1;
+//       floorStats[floor]!['total_duration'] =
+//           (floorStats[floor]!['total_duration'] as double) + duration;
+//     }
+//
+//     List<Map<String, dynamic>> ranking = floorStats.values.map((stats) {
+//       final totalSeconds = stats['total_duration'] as double;
+//       final hours = (totalSeconds / 3600).floor();
+//       final minutes = ((totalSeconds % 3600) / 60).floor();
+//
+//       return {
+//         'floor': stats['floor'],
+//         'count': stats['count'],
+//         'time': '${hours}h ${minutes}m',
+//       };
+//     }).toList();
+//
+//     ranking.sort((a, b) {
+//       final aDuration = floorStats[a['floor']]!['total_duration'] as double;
+//       final bDuration = floorStats[b['floor']]!['total_duration'] as double;
+//       return bDuration.compareTo(aDuration);
+//     });
+//
+//     showDialog(
+//       context: context,
+//       builder: (context) => Dialog(
+//         child: Container(
+//           padding: const EdgeInsets.all(16),
+//           child: Column(
+//             mainAxisSize: MainAxisSize.min,
+//             children: [
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   Text(
+//                     '$dayLabel の詳細',
+//                     style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+//                   ),
+//                   IconButton(
+//                     icon: const Icon(Icons.close),
+//                     onPressed: () => Navigator.pop(context),
+//                   ),
+//                 ],
+//               ),
+//               const SizedBox(height: 16),
+//               if (ranking.isEmpty)
+//                 const Padding(
+//                   padding: EdgeInsets.all(32.0),
+//                   child: Text('データがありません'),
+//                 )
+//               else
+//                 SingleChildScrollView(
+//                   child: DataTable(
+//                     columnSpacing: 20,
+//                     columns: const [
+//                       DataColumn(label: Text('階')),
+//                       DataColumn(label: Text('使用回数')),
+//                       DataColumn(label: Text('累計時間')),
+//                       DataColumn(label: Text('順位')),
+//                     ],
+//                     rows: List.generate(ranking.length, (index) {
+//                       final data = ranking[index];
+//                       return DataRow(
+//                         cells: [
+//                           DataCell(Text(data['floor'].toString())),
+//                           DataCell(Text('${data['count']}回')),
+//                           DataCell(Text(data['time'].toString())),
+//                           DataCell(Text('${index + 1}位')),
+//                         ],
+//                       );
+//                     }),
+//                   ),
+//                 ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     if (isLoading) {
+//       return Scaffold(
+//         appBar: AppBar(
+//           title: Text('データ集計'),
+//         ),
+//         body: Center(
+//           child: CircularProgressIndicator(),
+//         ),
+//       );
+//     }
+//
+//     final startDate = DateTime.now().subtract(const Duration(days: 6));
+//     final endDate = DateTime.now();
+//     final days = List.generate(7, (index) {
+//       final date = DateTime.now().subtract(Duration(days: 6 - index));
+//       return '${date.month}/${date.day}';
+//     });
+//
+//     String formatDateRange() {
+//       if (startDate.year == endDate.year) {
+//         return '${startDate.year}/${startDate.month}/${startDate.day} 〜 ${endDate.month}/${endDate.day}';
+//       } else {
+//         return '${startDate.year}/${startDate.month}/${startDate.day} 〜 ${endDate.year}/${endDate.month}/${endDate.day}';
+//       }
+//     }
+//
+//     final counts = _getDailyCounts();
+//     final displayRanking = _generateRanking();
+//
+//     String getRankingTitle() {
+//       if (selectedDateRange != null) {
+//         return '${dateFormat.format(selectedDateRange!.start)} 〜 ${dateFormat.format(selectedDateRange!.end)} のランキング';
+//       } else if (selectedDayIndex != null) {
+//         return '${days[selectedDayIndex!]} のランキング';
+//       } else {
+//         return '期間を選択';
+//       }
+//     }
+//
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('データ集計'),
+//         actions: [
+//           IconButton(
+//             icon: const Icon(Icons.refresh),
+//             onPressed: _fetchUsageLogs,
+//             tooltip: 'データを再読み込み',
+//           ),
+//         ],
+//       ),
+//       body: RefreshIndicator(
+//         onRefresh: _fetchUsageLogs,
+//         child: ListView(
+//           padding: const EdgeInsets.all(12),
+//           children: [
+//             Text(
+//               selectedDayIndex != null
+//                   ? '${days[selectedDayIndex!]} の使用履歴'
+//                   : '${formatDateRange()} の使用履歴',
+//               style: Theme.of(context).textTheme.titleMedium,
+//             ),
+//             const SizedBox(height: 12),
+//             // 簡易バー
+//             SizedBox(
+//               height: 160,
+//               child: Row(
+//                 crossAxisAlignment: CrossAxisAlignment.end,
+//                 children: List.generate(counts.length, (i) {
+//                   final isSelected = selectedDayIndex == i;
+//                   final maxCount = counts.reduce((a, b) => a > b ? a : b);
+//                   final barHeight = maxCount > 0
+//                       ? (counts[i] / maxCount * 120).clamp(8.0, 120.0)
+//                       : 8.0;
+//
+//                   return Expanded(
+//                     child: GestureDetector(
+//                       onTap: () {
+//                         setState(() {
+//                           selectedDateRange = null;
+//                           if (selectedDayIndex == i) {
+//                             selectedDayIndex = null;
+//                           } else {
+//                             selectedDayIndex = i;
+//                             // ポップアップを表示
+//                             _showDayDetailDialog(context, i, days[i]);
+//                           }
+//                         });
+//                       },
+//                       child: Column(
+//                         mainAxisAlignment: MainAxisAlignment.end,
+//                         children: [
+//                           Expanded(
+//                             child: Align(
+//                               alignment: Alignment.bottomCenter,
+//                               child: Container(
+//                                 width: 22,
+//                                 height: barHeight,
+//                                 decoration: BoxDecoration(
+//                                   color: isSelected ? Colors.orange : Colors.blue,
+//                                   borderRadius: BorderRadius.circular(4),
+//                                   border: isSelected
+//                                       ? Border.all(color: Colors.orangeAccent, width: 2)
+//                                       : null,
+//                                 ),
+//                                 child: Center(
+//                                   child: counts[i] > 0
+//                                       ? Text(
+//                                     '${counts[i]}',
+//                                     style: const TextStyle(
+//                                       color: Colors.white,
+//                                       fontSize: 10,
+//                                       fontWeight: FontWeight.bold,
+//                                     ),
+//                                   )
+//                                       : null,
+//                                 ),
+//                               ),
+//                             ),
+//                           ),
+//                           const SizedBox(height: 8),
+//                           Text(
+//                             days[i],
+//                             style: TextStyle(
+//                               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+//                               color: isSelected ? Colors.orange : null,
+//                               fontSize: 12,
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   );
+//                 }),
+//               ),
+//             ),
+//             const SizedBox(height: 16),
+//             // タップ可能なランキングタイトル
+//             GestureDetector(
+//               onTap: () => _pickDateRange(context),
+//               child: Container(
+//                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+//                 decoration: BoxDecoration(
+//                   color: selectedDateRange != null
+//                       ? Colors.blue.shade50
+//                       : Colors.grey.shade100,
+//                   borderRadius: BorderRadius.circular(8),
+//                   border: Border.all(
+//                     color: selectedDateRange != null
+//                         ? Colors.blue
+//                         : Colors.grey.shade300,
+//                     width: 1.5,
+//                   ),
+//                 ),
+//                 child: Row(
+//                   children: [
+//                     Icon(
+//                       Icons.calendar_today,
+//                       size: 18,
+//                       color: selectedDateRange != null
+//                           ? Colors.blue
+//                           : Colors.grey.shade600,
+//                     ),
+//                     const SizedBox(width: 8),
+//                     Expanded(
+//                       child: Text(
+//                         getRankingTitle(),
+//                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
+//                           color: selectedDateRange != null
+//                               ? Colors.blue.shade700
+//                               : null,
+//                           fontWeight: selectedDateRange != null
+//                               ? FontWeight.bold
+//                               : null,
+//                         ),
+//                       ),
+//                     ),
+//                     Icon(
+//                       Icons.arrow_drop_down,
+//                       color: selectedDateRange != null
+//                           ? Colors.blue
+//                           : Colors.grey.shade600,
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//             const SizedBox(height: 8),
+//             if (displayRanking.isEmpty)
+//               Card(
+//                 child: Padding(
+//                   padding: const EdgeInsets.all(32.0),
+//                   child: Column(
+//                     children: [
+//                       Icon(Icons.inbox, size: 64, color: Colors.grey.shade400),
+//                       const SizedBox(height: 16),
+//                       Text(
+//                         'データがありません',
+//                         style: TextStyle(
+//                           fontSize: 16,
+//                           color: Colors.grey.shade600,
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               )
+//             else
+//               Card(
+//                 child: DataTable(
+//                   columnSpacing: 20,
+//                   columns: const [
+//                     DataColumn(label: Text('階')),
+//                     DataColumn(label: Text('使用回数')),
+//                     DataColumn(label: Text('累計使用時間')),
+//                     DataColumn(label: Text('ランキング')),
+//                   ],
+//                   rows: List.generate(displayRanking.length, (index) {
+//                     final data = displayRanking[index];
+//                     return DataRow(
+//                       cells: [
+//                         DataCell(Text(data['floor'].toString())),
+//                         DataCell(Text('${data['count']}回')),
+//                         DataCell(Text(data['time'].toString())),
+//                         DataCell(Text('${index + 1}位')),
+//                       ],
+//                     );
+//                   }),
+//                 ),
+//               ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+//
+// // カスタム期間選択カレンダー
+// class CustomDateRangePicker extends StatefulWidget {
+//   const CustomDateRangePicker({super.key});
+//
+//   @override
+//   State<CustomDateRangePicker> createState() => _CustomDateRangePickerState();
+// }
+//
+// class _CustomDateRangePickerState extends State<CustomDateRangePicker> {
+//   DateTime? _rangeStart;
+//   DateTime? _rangeEnd;
+//   DateTime _focusedDay = DateTime.now();
+//   final DateFormat dateFormat = DateFormat('yyyy/MM/dd');
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Dialog(
+//       child: SingleChildScrollView(
+//         child: Container(
+//           padding: const EdgeInsets.all(16),
+//           child: Column(
+//             mainAxisSize: MainAxisSize.min,
+//             children: [
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   const Text(
+//                     '期間を選択',
+//                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+//                   ),
+//                   IconButton(
+//                     icon: const Icon(Icons.close),
+//                     onPressed: () => Navigator.pop(context),
+//                   ),
+//                 ],
+//               ),
+//               const SizedBox(height: 8),
+//               if (_rangeStart != null || _rangeEnd != null)
+//                 Container(
+//                   padding: const EdgeInsets.all(12),
+//                   decoration: BoxDecoration(
+//                     color: Colors.blue.shade50,
+//                     borderRadius: BorderRadius.circular(8),
+//                   ),
+//                   child: Row(
+//                     mainAxisAlignment: MainAxisAlignment.center,
+//                     children: [
+//                       Text(
+//                         _rangeStart != null
+//                             ? dateFormat.format(_rangeStart!)
+//                             : '開始日',
+//                         style: TextStyle(
+//                           fontWeight: FontWeight.bold,
+//                           color: Colors.blue.shade700,
+//                         ),
+//                       ),
+//                       const SizedBox(width: 8),
+//                       const Text('〜'),
+//                       const SizedBox(width: 8),
+//                       Text(
+//                         _rangeEnd != null
+//                             ? dateFormat.format(_rangeEnd!)
+//                             : '終了日',
+//                         style: TextStyle(
+//                           fontWeight: FontWeight.bold,
+//                           color: Colors.blue.shade700,
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               const SizedBox(height: 16),
+//               TableCalendar(
+//                 firstDay: DateTime(DateTime.now().year - 3),
+//                 lastDay: DateTime.now(),
+//                 focusedDay: _focusedDay,
+//                 locale: 'ja_JP',
+//                 rangeStartDay: _rangeStart,
+//                 rangeEndDay: _rangeEnd,
+//                 rangeSelectionMode: RangeSelectionMode.toggledOn,
+//                 onDaySelected: (selectedDay, focusedDay) {
+//                   if (selectedDay.isAfter(DateTime.now())) return;
+//
+//                   setState(() {
+//                     _focusedDay = focusedDay;
+//                     if (_rangeStart == null || _rangeEnd != null) {
+//                       _rangeStart = selectedDay;
+//                       _rangeEnd = null;
+//                     } else if (selectedDay.isBefore(_rangeStart!)) {
+//                       _rangeStart = selectedDay;
+//                     } else {
+//                       _rangeEnd = selectedDay;
+//                       Navigator.pop(
+//                         context,
+//                         DateTimeRange(start: _rangeStart!, end: _rangeEnd!),
+//                       );
+//                     }
+//                   });
+//                 },
+//                 calendarStyle: CalendarStyle(
+//                   rangeStartDecoration: const BoxDecoration(
+//                     color: Colors.blue,
+//                     shape: BoxShape.circle,
+//                   ),
+//                   rangeEndDecoration: const BoxDecoration(
+//                     color: Colors.blue,
+//                     shape: BoxShape.circle,
+//                   ),
+//                   rangeHighlightColor: Colors.blue.shade100,
+//                   todayDecoration: BoxDecoration(
+//                     color: Colors.orange.shade300,
+//                     shape: BoxShape.circle,
+//                   ),
+//                   selectedDecoration: BoxDecoration(
+//                     color: Colors.blue.shade700,
+//                     shape: BoxShape.circle,
+//                   ),
+//                   outsideDaysVisible: false,
+//                 ),
+//                 headerStyle: const HeaderStyle(
+//                   formatButtonVisible: false,
+//                   titleCentered: true,
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
-// ★ 多言語化：自動生成ではなく自作ファイルを読み込む
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../l10n/app_localizations.dart';
 
 class AnalyticsPage extends StatefulWidget {
@@ -12,166 +664,678 @@ class AnalyticsPage extends StatefulWidget {
 }
 
 class _AnalyticsPageState extends State<AnalyticsPage> {
-  DateTimeRange? selectedRange;
+  int? selectedDayIndex;
+  DateTimeRange? selectedDateRange;
+
+  // DateFormatはロケールに合わせて後で初期化または取得
+  DateFormat get dateFormat => DateFormat('yyyy/MM/dd');
+
+  List<Map<String, dynamic>> allUsageLogs = [];
+  bool isLoading = true;
 
   @override
-  Widget build(BuildContext context) {
-    final loc = AppLocalizations.of(context)!;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(loc.analyticsTitle), // ← 多言語化 OK
-      ),
-      body: Column(
-        children: [
-          // ─────────────────────────────
-          // ① 期間選択 UI
-          // ─────────────────────────────
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: InkWell(
-              onTap: () async {
-                DateTimeRange? range = await showDateRangePicker(
-                  context: context,
-                  firstDate: DateTime(2020),
-                  lastDate: DateTime.now(),
-                );
-
-                if (range != null) {
-                  setState(() => selectedRange = range);
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.date_range),
-                    const SizedBox(width: 12),
-                    Text(
-                      selectedRange == null
-                          ? loc.selectPeriod
-                          : "${selectedRange!.start.year}/${selectedRange!.start.month}/${selectedRange!.start.day}"
-                          " - "
-                          "${selectedRange!.end.year}/${selectedRange!.end.month}/${selectedRange!.end.day}",
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 12),
-
-          // ─────────────────────────────
-          // ② Firestore 取得
-          // ─────────────────────────────
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection("toilets_log")
-                  .orderBy("timestamp", descending: false)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(child: Text(loc.noData));
-                }
-
-                final docs = snapshot.data!.docs;
-
-                // ─────────────────────────────
-                // ③ 集計処理
-                // ─────────────────────────────
-                Map<String, int> usageCount = {};
-
-                for (var doc in docs) {
-                  String floor = doc["floor"] ?? "Unknown";
-
-                  if (selectedRange != null) {
-                    final timestamp = (doc["timestamp"] as Timestamp).toDate();
-                    if (timestamp.isBefore(selectedRange!.start) ||
-                        timestamp.isAfter(selectedRange!.end)) {
-                      continue;
-                    }
-                  }
-
-                  usageCount[floor] = (usageCount[floor] ?? 0) + 1;
-                }
-
-                final sortedFloors = usageCount.entries.toList()
-                  ..sort((a, b) => b.value.compareTo(a.value));
-
-                return Column(
-                  children: [
-                    // ─────────────────────────────
-                    // ④ ヘッダー
-                    // ─────────────────────────────
-                    Container(
-                      color: Colors.grey.shade200,
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Row(
-                        children: [
-                          _headerCell(loc.floorLabel),
-                          _headerCell(loc.usageCountLabel),
-                          _headerCell(loc.rankLabel),
-                        ],
-                      ),
-                    ),
-
-                    Expanded(
-                      child: ListView(
-                        children: sortedFloors.asMap().entries.map((entry) {
-                          int index = entry.key;
-                          String floor = entry.value.key;
-                          int count = entry.value.value;
-
-                          return Row(
-                            children: [
-                              _dataCell(floor),
-                              _dataCell("$count"),
-                              _dataCell("${index + 1}${loc.rankSuffix}"),
-                            ],
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
+  void initState() {
+    super.initState();
+    _fetchUsageLogs();
   }
 
-  // ─────────────────────────────
-  // 表のセル Widget
-  // ─────────────────────────────
-  Widget _headerCell(String text) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Text(
-          text,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+  // Firestoreからデータ取得
+  Future<void> _fetchUsageLogs() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final db = FirebaseFirestore.instance;
+      final snapshot = await db
+          .collection('usage_logs')
+          .orderBy('created_at', descending: true)
+          .get();
+
+      List<Map<String, dynamic>> logs = [];
+      for (var doc in snapshot.docs) {
+        final data = doc.data();
+        logs.add({
+          'id': doc.id,
+          'floor': data['floor'] ?? '',
+          'toilet_id': data['toilet_id'] ?? '',
+          'duration_sec': (data['duration_sec'] ?? 0.0).toDouble(),
+          // FirestoreのTimestampをDateTimeに変換 (+9時間の簡易補正)
+          // ※ 本格的なアプリではタイムゾーンライブラリの使用を推奨
+          'start_time': (data['start_time'] as Timestamp?)?.toDate().add(const Duration(hours: 9)),
+          'end_time': (data['end_time'] as Timestamp?)?.toDate().add(const Duration(hours: 9)),
+          'created_at': (data['created_at'] as Timestamp?)?.toDate().add(const Duration(hours: 9)),
+        });
+      }
+
+      if (mounted) {
+        setState(() {
+          allUsageLogs = logs;
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error fetching data: $e');
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
+
+  // 期間でフィルタリングされたデータを取得
+  List<Map<String, dynamic>> _getFilteredLogs() {
+    if (selectedDateRange != null) {
+      return allUsageLogs.where((log) {
+        final createdAt = log['created_at'] as DateTime?;
+        if (createdAt == null) return false;
+        final startOfDay = DateTime(selectedDateRange!.start.year,
+            selectedDateRange!.start.month, selectedDateRange!.start.day);
+        final endOfDay = DateTime(selectedDateRange!.end.year,
+            selectedDateRange!.end.month, selectedDateRange!.end.day, 23, 59, 59);
+        return createdAt.isAfter(startOfDay) && createdAt.isBefore(endOfDay);
+      }).toList();
+    } else if (selectedDayIndex != null) {
+      final targetDate = DateTime.now().subtract(Duration(days: 6 - selectedDayIndex!));
+      return allUsageLogs.where((log) {
+        final createdAt = log['created_at'] as DateTime?;
+        if (createdAt == null) return false;
+        return createdAt.year == targetDate.year &&
+            createdAt.month == targetDate.month &&
+            createdAt.day == targetDate.day;
+      }).toList();
+    } else {
+      // 過去7日間のデータ
+      final sevenDaysAgo = DateTime.now().subtract(const Duration(days: 6));
+      final startOfDay = DateTime(sevenDaysAgo.year, sevenDaysAgo.month, sevenDaysAgo.day);
+      return allUsageLogs.where((log) {
+        final createdAt = log['created_at'] as DateTime?;
+        if (createdAt == null) return false;
+        return createdAt.isAfter(startOfDay);
+      }).toList();
+    }
+  }
+
+  // 階ごとのランキングデータを生成
+  List<Map<String, dynamic>> _generateRanking() {
+    final filteredLogs = _getFilteredLogs();
+
+    if (filteredLogs.isEmpty) {
+      return [];
+    }
+
+    // 階ごとに集計
+    Map<String, Map<String, dynamic>> floorStats = {};
+
+    for (var log in filteredLogs) {
+      final floor = log['floor'] as String;
+      final duration = log['duration_sec'] as double;
+
+      if (!floorStats.containsKey(floor)) {
+        floorStats[floor] = {
+          'floor': floor,
+          'count': 0,
+          'total_duration': 0.0,
+        };
+      }
+
+      floorStats[floor]!['count'] = (floorStats[floor]!['count'] as int) + 1;
+      floorStats[floor]!['total_duration'] =
+          (floorStats[floor]!['total_duration'] as double) + duration;
+    }
+
+    // ランキング用のリストに変換
+    List<Map<String, dynamic>> ranking = floorStats.values.map((stats) {
+      final totalSeconds = stats['total_duration'] as double;
+      final hours = (totalSeconds / 3600).floor();
+      final minutes = ((totalSeconds % 3600) / 60).floor();
+
+      return {
+        'floor': stats['floor'],
+        'count': stats['count'],
+        'time': '${hours}h ${minutes}m',
+      };
+    }).toList();
+
+    // 累計使用時間でソート
+    ranking.sort((a, b) {
+      final aDuration = floorStats[a['floor']]!['total_duration'] as double;
+      final bDuration = floorStats[b['floor']]!['total_duration'] as double;
+      return bDuration.compareTo(aDuration);
+    });
+
+    return ranking;
+  }
+
+  // 日ごとの使用回数を取得（バーグラフ用）
+  List<int> _getDailyCounts() {
+    List<int> counts = List.filled(7, 0);
+
+    for (int i = 0; i < 7; i++) {
+      final targetDate = DateTime.now().subtract(Duration(days: 6 - i));
+      final count = allUsageLogs.where((log) {
+        final createdAt = log['created_at'] as DateTime?;
+        if (createdAt == null) return false;
+        return createdAt.year == targetDate.year &&
+            createdAt.month == targetDate.month &&
+            createdAt.day == targetDate.day;
+      }).length;
+      counts[i] = count;
+    }
+
+    return counts;
+  }
+
+  Future<void> _pickDateRange(BuildContext context) async {
+    final result = await showDialog<DateTimeRange>(
+      context: context,
+      builder: (context) => const CustomDateRangePicker(),
+    );
+
+    if (result != null) {
+      setState(() {
+        selectedDateRange = result;
+        selectedDayIndex = null;
+      });
+    }
+  }
+
+  Future<void> _showDayDetailDialog(BuildContext context, int dayIndex, String dayLabel) async {
+    final loc = AppLocalizations.of(context)!; // ローカライゼーション取得
+    final targetDate = DateTime.now().subtract(Duration(days: 6 - dayIndex));
+    final dayLogs = allUsageLogs.where((log) {
+      final createdAt = log['created_at'] as DateTime?;
+      if (createdAt == null) return false;
+      return createdAt.year == targetDate.year &&
+          createdAt.month == targetDate.month &&
+          createdAt.day == targetDate.day;
+    }).toList();
+
+    // 階ごとに集計
+    Map<String, Map<String, dynamic>> floorStats = {};
+    for (var log in dayLogs) {
+      final floor = log['floor'] as String;
+      final duration = log['duration_sec'] as double;
+
+      if (!floorStats.containsKey(floor)) {
+        floorStats[floor] = {'floor': floor, 'count': 0, 'total_duration': 0.0};
+      }
+
+      floorStats[floor]!['count'] = (floorStats[floor]!['count'] as int) + 1;
+      floorStats[floor]!['total_duration'] =
+          (floorStats[floor]!['total_duration'] as double) + duration;
+    }
+
+    List<Map<String, dynamic>> ranking = floorStats.values.map((stats) {
+      final totalSeconds = stats['total_duration'] as double;
+      final hours = (totalSeconds / 3600).floor();
+      final minutes = ((totalSeconds % 3600) / 60).floor();
+
+      return {
+        'floor': stats['floor'],
+        'count': stats['count'],
+        'time': '${hours}h ${minutes}m',
+      };
+    }).toList();
+
+    ranking.sort((a, b) {
+      final aDuration = floorStats[a['floor']]!['total_duration'] as double;
+      final bDuration = floorStats[b['floor']]!['total_duration'] as double;
+      return bDuration.compareTo(aDuration);
+    });
+
+    if (!context.mounted) return;
+
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        // ダークモード対応: 背景色をテーマに合わせる
+        backgroundColor: Theme.of(context).dialogBackgroundColor,
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    loc.getDailyDetailTitle(dayLabel), // "{day} の詳細"
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              if (ranking.isEmpty)
+                Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: Text(loc.noData), // "データがありません"
+                )
+              else
+                SingleChildScrollView(
+                  child: DataTable(
+                    columnSpacing: 20,
+                    columns: [
+                      DataColumn(label: Text(loc.floor)),          // "階"
+                      DataColumn(label: Text(loc.usageCount)),     // "使用回数"
+                      DataColumn(label: Text(loc.totalTime)),      // "累計時間"
+                      DataColumn(label: Text(loc.ranking)),        // "ランキング" (順位)
+                    ],
+                    rows: List.generate(ranking.length, (index) {
+                      final data = ranking[index];
+                      return DataRow(
+                        cells: [
+                          DataCell(Text(data['floor'].toString())),
+                          DataCell(Text(loc.countUnit(data['count']))), // "{count}回"
+                          DataCell(Text(data['time'].toString())),
+                          DataCell(Text(loc.rankingUnit(index + 1))),   // "{rank}位"
+                        ],
+                      );
+                    }),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _dataCell(String text) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Text(text),
+  @override
+  Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+
+    if (isLoading) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(loc.analyticsTitle), // "集計"
+          centerTitle: true,
+        ),
+        body: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    final startDate = DateTime.now().subtract(const Duration(days: 6));
+    final endDate = DateTime.now();
+    final days = List.generate(7, (index) {
+      final date = DateTime.now().subtract(Duration(days: 6 - index));
+      return '${date.month}/${date.day}';
+    });
+
+    String formatDateRange() {
+      if (startDate.year == endDate.year) {
+        return '${startDate.year}/${startDate.month}/${startDate.day} 〜 ${endDate.month}/${endDate.day}';
+      } else {
+        return '${startDate.year}/${startDate.month}/${startDate.day} 〜 ${endDate.year}/${endDate.month}/${endDate.day}';
+      }
+    }
+
+    final counts = _getDailyCounts();
+    final displayRanking = _generateRanking();
+
+    String getRankingTitle() {
+      if (selectedDateRange != null) {
+        final startStr = dateFormat.format(selectedDateRange!.start);
+        final endStr = dateFormat.format(selectedDateRange!.end);
+        return loc.rankingDateRange(startStr, endStr); // "{start} 〜 {end} のランキング"
+      } else if (selectedDayIndex != null) {
+        return loc.rankingDay(days[selectedDayIndex!]); // "{day} のランキング"
+      } else {
+        return loc.selectPeriod; // "期間を選択"
+      }
+    }
+
+    // グラフや選択状態の色設定
+    final primaryColor = theme.colorScheme.primary;
+    final secondaryColor = theme.colorScheme.secondary; // アクセントカラー
+    final unselectedColor = theme.disabledColor;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(loc.analyticsTitle),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _fetchUsageLogs,
+            tooltip: loc.refreshData,
+          ),
+        ],
+      ),
+      body: RefreshIndicator(
+        onRefresh: _fetchUsageLogs,
+        child: ListView(
+          padding: const EdgeInsets.all(12),
+          children: [
+            Text(
+              selectedDayIndex != null
+                  ? loc.dailyHistory(days[selectedDayIndex!]) // "{day} の使用履歴"
+                  : loc.periodHistory(formatDateRange()),     // "{range} の使用履歴"
+              style: theme.textTheme.titleMedium,
+            ),
+            const SizedBox(height: 12),
+            // 簡易バーグラフ
+            SizedBox(
+              height: 160,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: List.generate(counts.length, (i) {
+                  final isSelected = selectedDayIndex == i;
+                  final maxCount = counts.reduce((a, b) => a > b ? a : b);
+                  final barHeight = maxCount > 0
+                      ? (counts[i] / maxCount * 120).clamp(8.0, 120.0)
+                      : 8.0;
+
+                  // 選択時はSecondary色、通常はPrimary色
+                  final barColor = isSelected ? secondaryColor : primaryColor;
+                  final textColor = isSelected ? secondaryColor : theme.textTheme.bodyMedium?.color;
+
+                  return Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedDateRange = null;
+                          if (selectedDayIndex == i) {
+                            selectedDayIndex = null;
+                          } else {
+                            selectedDayIndex = i;
+                            // ポップアップを表示
+                            _showDayDetailDialog(context, i, days[i]);
+                          }
+                        });
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Container(
+                                width: 22,
+                                height: barHeight,
+                                decoration: BoxDecoration(
+                                  color: barColor,
+                                  borderRadius: BorderRadius.circular(4),
+                                  border: isSelected
+                                      ? Border.all(color: secondaryColor.withOpacity(0.7), width: 2)
+                                      : null,
+                                ),
+                                child: Center(
+                                  child: counts[i] > 0
+                                      ? Text(
+                                    '${counts[i]}',
+                                    style: TextStyle(
+                                      color: theme.colorScheme.onPrimary,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                      : null,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            days[i],
+                            style: TextStyle(
+                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                              color: textColor,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
+            const SizedBox(height: 16),
+            // 期間選択ボタン
+            GestureDetector(
+              onTap: () => _pickDateRange(context),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                decoration: BoxDecoration(
+                  // ダークモード対応: 背景色と枠線
+                  color: selectedDateRange != null
+                      ? theme.colorScheme.primaryContainer.withOpacity(0.2)
+                      : theme.cardColor,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: selectedDateRange != null
+                        ? primaryColor
+                        : theme.dividerColor,
+                    width: 1.5,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.calendar_today,
+                      size: 18,
+                      color: selectedDateRange != null
+                          ? primaryColor
+                          : unselectedColor,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        getRankingTitle(),
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: selectedDateRange != null ? primaryColor : null,
+                          fontWeight: selectedDateRange != null
+                              ? FontWeight.bold
+                              : null,
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_drop_down,
+                      color: selectedDateRange != null
+                          ? primaryColor
+                          : unselectedColor,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            // ランキングテーブル
+            if (displayRanking.isEmpty)
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: Column(
+                    children: [
+                      Icon(Icons.inbox, size: 64, color: unselectedColor),
+                      const SizedBox(height: 16),
+                      Text(
+                        loc.noData,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: unselectedColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            else
+              Card(
+                child: DataTable(
+                  columnSpacing: 20,
+                  columns: [
+                    DataColumn(label: Text(loc.floor)),          // "階"
+                    DataColumn(label: Text(loc.usageCount)),     // "使用回数"
+                    DataColumn(label: Text(loc.totalUsageTime)), // "累計使用時間"
+                    DataColumn(label: Text(loc.ranking)),        // "ランキング"
+                  ],
+                  rows: List.generate(displayRanking.length, (index) {
+                    final data = displayRanking[index];
+                    return DataRow(
+                      cells: [
+                        DataCell(Text(data['floor'].toString())),
+                        DataCell(Text(loc.countUnit(data['count']))), // "{count}回"
+                        DataCell(Text(data['time'].toString())),
+                        DataCell(Text(loc.rankingUnit(index + 1))),   // "{rank}位"
+                      ],
+                    );
+                  }),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// カスタム期間選択カレンダー
+class CustomDateRangePicker extends StatefulWidget {
+  const CustomDateRangePicker({super.key});
+
+  @override
+  State<CustomDateRangePicker> createState() => _CustomDateRangePickerState();
+}
+
+class _CustomDateRangePickerState extends State<CustomDateRangePicker> {
+  DateTime? _rangeStart;
+  DateTime? _rangeEnd;
+  DateTime _focusedDay = DateTime.now();
+  final DateFormat dateFormat = DateFormat('yyyy/MM/dd');
+
+  @override
+  Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final primaryColor = theme.colorScheme.primary;
+
+    return Dialog(
+      backgroundColor: theme.dialogBackgroundColor,
+      child: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    loc.selectPeriod, // "期間を選択"
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              if (_rangeStart != null || _rangeEnd != null)
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primaryContainer.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        _rangeStart != null
+                            ? dateFormat.format(_rangeStart!)
+                            : loc.startDate, // "開始日"
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: primaryColor,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      const Text('〜'),
+                      const SizedBox(width: 8),
+                      Text(
+                        _rangeEnd != null
+                            ? dateFormat.format(_rangeEnd!)
+                            : loc.endDate, // "終了日"
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: primaryColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              const SizedBox(height: 16),
+              TableCalendar(
+                firstDay: DateTime(DateTime.now().year - 3),
+                lastDay: DateTime.now(),
+                focusedDay: _focusedDay,
+                // AppLocalizationsから現在のロケールを取得して設定
+                locale: loc.localeName,
+                rangeStartDay: _rangeStart,
+                rangeEndDay: _rangeEnd,
+                rangeSelectionMode: RangeSelectionMode.toggledOn,
+                onDaySelected: (selectedDay, focusedDay) {
+                  if (selectedDay.isAfter(DateTime.now())) return;
+
+                  setState(() {
+                    _focusedDay = focusedDay;
+                    if (_rangeStart == null || _rangeEnd != null) {
+                      _rangeStart = selectedDay;
+                      _rangeEnd = null;
+                    } else if (selectedDay.isBefore(_rangeStart!)) {
+                      _rangeStart = selectedDay;
+                    } else {
+                      _rangeEnd = selectedDay;
+                      Navigator.pop(
+                        context,
+                        DateTimeRange(start: _rangeStart!, end: _rangeEnd!),
+                      );
+                    }
+                  });
+                },
+                calendarStyle: CalendarStyle(
+                  rangeStartDecoration: BoxDecoration(
+                    color: primaryColor,
+                    shape: BoxShape.circle,
+                  ),
+                  rangeEndDecoration: BoxDecoration(
+                    color: primaryColor,
+                    shape: BoxShape.circle,
+                  ),
+                  rangeHighlightColor: primaryColor.withOpacity(0.2),
+                  todayDecoration: BoxDecoration(
+                    color: theme.colorScheme.secondary.withOpacity(0.6),
+                    shape: BoxShape.circle,
+                  ),
+                  selectedDecoration: BoxDecoration(
+                    color: primaryColor,
+                    shape: BoxShape.circle,
+                  ),
+                  outsideDaysVisible: false,
+                  // ダークモード時のテキスト色調整
+                  defaultTextStyle: theme.textTheme.bodyMedium ?? const TextStyle(),
+                  weekendTextStyle: TextStyle(color: theme.colorScheme.error),
+                ),
+                headerStyle: const HeaderStyle(
+                  formatButtonVisible: false,
+                  titleCentered: true,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

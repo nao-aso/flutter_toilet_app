@@ -155,6 +155,12 @@ abstract class AppLocalizations {
   /// **'Building 1 - Toilet Status'**
   String get homeTitle;
 
+  /// No description provided for @crowdTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Congestion'**
+  String get crowdTitle;
+
   /// No description provided for @waitingNotification.
   ///
   /// In en, this message translates to:
@@ -170,93 +176,8 @@ abstract class AppLocalizations {
   /// No description provided for @floorAvailable.
   ///
   /// In en, this message translates to:
-<<<<<<< HEAD
-  /// **'A stall is now available on {floor}.'**
-=======
   /// **'{floor} is available.'**
->>>>>>> ebbb4254758f62160ee5df0f5d87a5219c2ea506
   String floorAvailable(Object floor);
-
-  /// No description provided for @analyticsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Analytics'**
-  String get analyticsTitle;
-
-<<<<<<< HEAD
-  /// No description provided for @selectPeriod.
-  ///
-  /// In en, this message translates to:
-  /// **'Select period'**
-  String get selectPeriod;
-
-  /// No description provided for @floorLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Floor'**
-  String get floorLabel;
-
-  /// No description provided for @usageCountLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Usage Count'**
-  String get usageCountLabel;
-
-  /// No description provided for @rankLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Rank'**
-  String get rankLabel;
-
-  /// No description provided for @rankSuffix.
-  ///
-  /// In en, this message translates to:
-  /// **'th'**
-  String get rankSuffix;
-=======
-  /// No description provided for @maleCrowdTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Men\'s'**
-  String get maleCrowdTitle;
-
-  /// No description provided for @femaleCrowdTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Women\'s'**
-  String get femaleCrowdTitle;
-
-  /// No description provided for @maleToilet.
-  ///
-  /// In en, this message translates to:
-  /// **'The men\'s toilet is now free.'**
-  String get maleToilet;
-
-  /// No description provided for @femaleToilet.
-  ///
-  /// In en, this message translates to:
-  /// **'The women\'s toilet is now free.'**
-  String get femaleToilet;
-
-  /// No description provided for @waitingNotificationTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Waiting Notification Set'**
-  String get waitingNotificationTitle;
-
-  /// No description provided for @waitingNotificationDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'You will be notified when a stall becomes available.'**
-  String get waitingNotificationDescription;
->>>>>>> ebbb4254758f62160ee5df0f5d87a5219c2ea506
-
-  /// No description provided for @noData.
-  ///
-  /// In en, this message translates to:
-  /// **'No data available'**
-  String get noData;
-<<<<<<< HEAD
 
   /// No description provided for @termsTitle.
   ///
@@ -287,8 +208,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open terms of service'**
   String get termsShortcutDescription;
-=======
->>>>>>> ebbb4254758f62160ee5df0f5d87a5219c2ea506
+
+  /// No description provided for @analyticsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics'**
+  String get analyticsTitle;
+
+  /// No description provided for @maleCrowdTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Men\'s'**
+  String get maleCrowdTitle;
+
+  /// No description provided for @femaleCrowdTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Women\'s'**
+  String get femaleCrowdTitle;
+
+  /// No description provided for @waitingNotificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting Notification Set'**
+  String get waitingNotificationTitle;
+
+  /// No description provided for @waitingNotificationDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You will be notified when a stall becomes available.'**
+  String get waitingNotificationDescription;
+
+  /// No description provided for @noData.
+  ///
+  /// In en, this message translates to:
+  /// **'No data available'**
+  String get noData;
+
+  /// No description provided for @errorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Feature Restricted'**
+  String get errorTitle;
+
+  /// No description provided for @femaleCrowdDisabledMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot move to the women\'s congestion screen at this time.'**
+  String get femaleCrowdDisabledMessage;
+
+  /// No description provided for @femaleAnalyticsDisabledMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot move to the women\'s analytics screen at this time.'**
+  String get femaleAnalyticsDisabledMessage;
+
+  /// No description provided for @refreshData.
+  ///
+  /// In en, this message translates to:
+  /// **'Reload Data'**
+  String get refreshData;
+
+  /// No description provided for @selectPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Period'**
+  String get selectPeriod;
+
+  /// No description provided for @startDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Date'**
+  String get startDate;
+
+  /// No description provided for @endDate.
+  ///
+  /// In en, this message translates to:
+  /// **'End Date'**
+  String get endDate;
+
+  /// No description provided for @floor.
+  ///
+  /// In en, this message translates to:
+  /// **'Floor'**
+  String get floor;
+
+  /// No description provided for @usageCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage Count'**
+  String get usageCount;
+
+  /// No description provided for @totalUsageTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Usage Time'**
+  String get totalUsageTime;
+
+  /// No description provided for @totalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Time'**
+  String get totalTime;
+
+  /// No description provided for @ranking.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank'**
+  String get ranking;
+
+  /// No description provided for @dailyHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage History for {day}'**
+  String dailyHistory(Object day);
+
+  /// No description provided for @periodHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage History for {range}'**
+  String periodHistory(Object range);
+
+  /// No description provided for @rankingDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Ranking for {day}'**
+  String rankingDay(Object day);
+
+  /// No description provided for @rankingDateRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Ranking from {start} to {end}'**
+  String rankingDateRange(Object start, Object end);
+
+  /// No description provided for @getDailyDetailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Details for {day}'**
+  String getDailyDetailTitle(Object day);
+
+  /// No description provided for @countUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} times'**
+  String countUnit(Object count);
+
+  /// No description provided for @rankingUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank {rank}'**
+  String rankingUnit(Object rank);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
