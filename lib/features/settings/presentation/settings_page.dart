@@ -56,7 +56,7 @@ class SettingsPage extends StatelessWidget {
             title: Text(loc.languageJapanese),
             onTap: () {
               languageProvider.setLocale(const Locale('ja'));
-              _showRestartDialog(context, loc);
+              // _showRestartDialog(context, loc);
             },
           ),
 
@@ -65,7 +65,7 @@ class SettingsPage extends StatelessWidget {
             title: Text(loc.languageEnglish),
             onTap: () {
               languageProvider.setLocale(const Locale('en'));
-              _showRestartDialog(context, loc);
+              // _showRestartDialog(context, loc);
             },
           ),
 
@@ -94,19 +94,19 @@ class SettingsPage extends StatelessWidget {
   // -------------------------------------------------------
   // 言語変更時の「再起動してください」ダイアログ
   // -------------------------------------------------------
-  void _showRestartDialog(BuildContext context, AppLocalizations loc) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Text(loc.restartRequired),
-        content: Text(loc.restartDescription),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(loc.ok),
-          ),
-        ],
-      ),
-    );
-  }
+  // void _showRestartDialog(BuildContext context, AppLocalizations loc) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (_) => AlertDialog(
+  //       title: Text(loc.restartRequired),
+  //       content: Text(loc.restartDescription),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.pop(context),
+  //           child: Text(loc.ok),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

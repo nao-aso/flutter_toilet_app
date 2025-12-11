@@ -39,7 +39,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeTitle => 'Building 1 - Toilet Status';
 
   @override
-  String get crowdTitle => 'Congestion';
+  String get crowdTitle => 'toilet';
 
   @override
   String get waitingNotification => 'Notify Me';

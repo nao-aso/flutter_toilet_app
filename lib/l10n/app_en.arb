@@ -9,7 +9,7 @@
     "restartDescription": "Please restart the app to apply language changes.",
     "ok": "OK",
     "homeTitle": "Building 1 - Toilet Status",
-    "crowdTitle": "Congestion",
+    "crowdTitle": "toilet",
     "waitingNotification": "Notify Me",
     "toiletAvailable": "Toilet is available",
     "floorAvailable": "{floor} is available.",

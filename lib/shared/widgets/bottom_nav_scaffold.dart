@@ -22,8 +22,8 @@ class _BottomNavScaffoldState extends State<BottomNavScaffold> {
 
   final _pages = const [
     MaleCrowdPage(),   // 0: 男子
-    AnalyticsPage(),   // 2: 分析
-    SettingsPage(),    // 3: 設定
+    AnalyticsPage(),   // 1: 分析
+    SettingsPage(),    // 2: 設定
   ];
 
   @override
@@ -38,8 +38,8 @@ class _BottomNavScaffoldState extends State<BottomNavScaffold> {
         destinations: [
           NavigationDestination(
             // Font Awesome のトイレアイコンに変更
-            icon: const Icon(FontAwesomeIcons.person),
-            label: loc.maleCrowdTitle, // ARBのキー
+            icon: const Icon(FontAwesomeIcons.restroom),
+            label: loc.crowdTitle, // ARBのキー
           ),
           NavigationDestination(
             icon: const Icon(Icons.bar_chart),

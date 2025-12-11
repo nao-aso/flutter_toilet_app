@@ -158,7 +158,7 @@ abstract class AppLocalizations {
   /// No description provided for @crowdTitle.
   ///
   /// In en, this message translates to:
-  /// **'Congestion'**
+  /// **'toilet'**
   String get crowdTitle;
 
   /// No description provided for @waitingNotification.

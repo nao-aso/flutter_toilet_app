@@ -39,7 +39,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get homeTitle => '1号館-トイレ混雑表示';
 
   @override
-  String get crowdTitle => '混雑表示';
+  String get crowdTitle => 'トイレ';
 
   @override
   String get waitingNotification => '待ち通知';
