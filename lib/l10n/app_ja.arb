@@ -12,7 +12,19 @@
   "waitingNotification": "待ち通知",
   "toiletAvailable": "トイレが空きました",
   "floorAvailable": "{floor} に空きが出ました。",
-  "analyticsTitle": "集計",
-  "noData": "データがありません"
+  "analyticsTitle": "データ集計",
+  "selectPeriod": "期間を選択",
+  "floorLabel": "階",
+  "usageCountLabel": "使用回数",
+  "rankLabel": "ランキング",
+  "rankSuffix": "位",
+  "noData": "データがありません",
+
+  "termsTitle": "利用規約",
+  "termsBody": "【利用規約】\n\nこのアプリを利用する前に以下の利用規約をよく読み、同意した上でご利用ください。\n\n1. 本アプリの利用により発生した損害について、開発者は責任を負いません。\n2. 解析データはサービス向上のために使用する場合があります。\n3. ユーザーは本アプリを不正利用してはなりません。\n\n上記を理解した上でご利用ください。",
+  "agreeTerms": "利用規約に同意します",
+  "continueLabel": "続ける",
+  "termsShortcutDescription": "利用規約を開く"
+
 
 }

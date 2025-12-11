@@ -13,6 +13,9 @@ import 'package:flutter_toilet_app/l10n/app_localizations.dart';
 
 import 'shared/widgets/bottom_nav_scaffold.dart';
 
+import 'features/terms/terms_page.dart';
+
+
 // 🔔 ローカル通知
 final FlutterLocalNotificationsPlugin localNotifications =
 FlutterLocalNotificationsPlugin();
@@ -61,7 +64,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
 
-      home: const BottomNavScaffold(),
+      home: const TermsPage(),
     );
   }
 }
