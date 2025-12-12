@@ -38,7 +38,7 @@
     "endDate": "End Date",
     "floor": "Floor",
     "usageCount": "Usage Count",
-    "totalUsageTime": "Total Usage Time",
+    "totalUsageTime": "Duration",
     "totalTime": "Total Time",
     "ranking": "Rank",
     "dailyHistory": "Usage History for {day}",

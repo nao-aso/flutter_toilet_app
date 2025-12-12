@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f2879736-b6ac-4325-be9c-f6b73cb61648" name="Changes" comment="macbook comit" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;nao-aso&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/nao-aso/flutter_toilet_app&quot;,
+    &quot;accountId&quot;: &quot;675842e4-04e2-4415-9cac-7ec1dfaa9343&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="365M0fI8NsIXvONfqFILzwya7lx" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "com.google.services.firebase.aqiPopupShown": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "io.flutter.project.isFirstOpen": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/etrobo/Developer/flutter_toilet_app/lib/features/home/presentation",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "dart.settings",
+    "show.migrate.to.gradle.popup": "false"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/lib/features/home/presentation" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
+      <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f2879736-b6ac-4325-be9c-f6b73cb61648" name="Changes" comment="" />
+      <created>1764291760607</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1764291760607</updated>
+    </task>
+    <task id="LOCAL-00001" summary="pubspec.yaml&#10;Firebase パッケージの依存関係の競合を解消">
+      <option name="closed" value="true" />
+      <created>1764305201914</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1764305201914</updated>
+    </task>
+    <task id="LOCAL-00002" summary="pubspec.yaml&#10;Firebase パッケージの依存関係の競合を解消">
+      <option name="closed" value="true" />
+      <created>1764305214878</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1764305214878</updated>
+    </task>
+    <task id="LOCAL-00003" summary="pubspec.yaml&#10;Firebase パッケージの依存関係の競合を解消">
+      <option name="closed" value="true" />
+      <created>1764305222590</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1764305222590</updated>
+    </task>
+    <task id="LOCAL-00004" summary="macbookでの動作確認済み">
+      <option name="closed" value="true" />
+      <created>1764728408315</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1764728408315</updated>
+    </task>
+    <task id="LOCAL-00005" summary="macbookでの動作確認済み">
+      <option name="closed" value="true" />
+      <created>1764812299434</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1764812299434</updated>
+    </task>
+    <task id="LOCAL-00006" summary="macbookでの動作確認済み">
+      <option name="closed" value="true" />
+      <created>1764812829557</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1764812829557</updated>
+    </task>
+    <task id="LOCAL-00007" summary="macbookでの動作確認済み　最新">
+      <option name="closed" value="true" />
+      <created>1764818913896</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1764818913896</updated>
+    </task>
+    <task id="LOCAL-00008" summary="kikkuuuのプロジェクトとマージが完了。&#10;男子トイレと女子トイレの混雑画面を作成。(firestore連携済み）&#10;混雑画面でダークモードと言語切り替えができていない部分があったので、対応させました。&#10;待ち通知を押して、アプリを閉じている間に個室に空きが出たらポップアップ通知が出るようになりました。&#10;アプリを開いている間は画面上の最前列に通知が来ます。">
+      <option name="closed" value="true" />
+      <created>1765155211260</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1765155211260</updated>
+    </task>
+    <task id="LOCAL-00009" summary="設定で性別を変更する機能をつける前のコミット">
+      <option name="closed" value="true" />
+      <created>1765246315745</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1765246315745</updated>
+    </task>
+    <task id="LOCAL-00010" summary="macbook comit">
+      <option name="closed" value="true" />
+      <created>1765499466702</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1765499466702</updated>
+    </task>
+    <task id="LOCAL-00011" summary="macbook comit">
+      <option name="closed" value="true" />
+      <created>1765499760103</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1765499760103</updated>
+    </task>
+    <task id="LOCAL-00012" summary="macbook comit">
+      <option name="closed" value="true" />
+      <created>1765505392057</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1765505392057</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="d7504b32-d70a-4421-bf88-96ff20e00ce2" value="TOOL_WINDOW" />
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="d7504b32-d70a-4421-bf88-96ff20e00ce2">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="pubspec.yaml&#10;Firebase パッケージの依存関係の競合を解消" />
+    <MESSAGE value="macbookでの動作確認済み" />
+    <MESSAGE value="macbookでの動作確認済み　最新" />
+    <MESSAGE value="kikkuuuのプロジェクトとマージが完了。&#10;男子トイレと女子トイレの混雑画面を作成。(firestore連携済み）&#10;混雑画面でダークモードと言語切り替えができていない部分があったので、対応させました。&#10;待ち通知を押して、アプリを閉じている間に個室に空きが出たらポップアップ通知が出るようになりました。&#10;アプリを開いている間は画面上の最前列に通知が来ます。" />
+    <MESSAGE value="設定で性別を変更する機能をつける前のコミット" />
+    <MESSAGE value="macbook comit" />
+    <option name="LAST_COMMIT_MESSAGE" value="macbook comit" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/features/terms/terms_page.dart</url>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

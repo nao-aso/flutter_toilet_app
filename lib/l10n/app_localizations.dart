@@ -302,7 +302,7 @@ abstract class AppLocalizations {
   /// No description provided for @totalUsageTime.
   ///
   /// In en, this message translates to:
-  /// **'Total Usage Time'**
+  /// **'Duration'**
   String get totalUsageTime;
 
   /// No description provided for @totalTime.

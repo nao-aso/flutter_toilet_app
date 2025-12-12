@@ -113,7 +113,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get usageCount => 'Usage Count';
 
   @override
-  String get totalUsageTime => 'Total Usage Time';
+  String get totalUsageTime => 'Duration';
 
   @override
   String get totalTime => 'Total Time';
