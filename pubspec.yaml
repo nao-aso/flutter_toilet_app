@@ -32,6 +32,18 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  # ★ 追加: アイコン生成用パッケージ
+  flutter_launcher_icons: ^0.13.1
+
+# ★ 追加: アイコン生成の設定
+flutter_launcher_icons:
+  android: "launcher_icon" # Android用アイコンのファイル名
+  ios: true                # iOS用アイコンも生成する
+  image_path: "assets/icon.png" # 用意した画像のパス
+  min_sdk_android: 21      # Androidの最小SDKバージョン（推奨）
+  # adaptive_icon_background: "#FFFFFF" # (任意) Androidのアダプティブアイコンの背景色
+  # adaptive_icon_foreground: "assets/icon_foreground.png" # (任意) 前景画像がある場合
+
 
 flutter:
   uses-material-design: true
